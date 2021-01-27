@@ -54,6 +54,7 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $metsHdr->addAttribute("RECORDSTATUS","VERSION");
         $metsHdr->addAttribute("CREATEDATE", $article->getDatePublished());
 
+        //METS Header
         $agentArchivist = $metsHdr->addChild("agent");
         $agentArchivist->addAttribute("ROLE", "ARCHIVIST");
         $agentArchivist->addAttribute("TYPE", "ORGANIZATION");
@@ -74,7 +75,30 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $agentSoftware->addChild("note","Version 2.76");
         $agentSoftware->addChild("note","https://github.com/Kungbib/...");
 
-        $altRecordId = $metsHdr->addChild("altRecordID");
+        $altRecordId = $metsHdr->addChild("altRecordID", "DEPOSIT");
+        $altRecordId->addAttribute("TYPE", "DELIVERYTYPE");
+
+        $altRecordId = $metsHdr->addChild("altRecordID", "http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf");
+        $altRecordId->addAttribute("TYPE", "DELIVERYSPECIFICATION");
+
+        $altRecordId = $metsHdr->addChild("altRecordID", "http://www.kb.se/namespace/digark/submissionagreement/oai-pmh/fgs-mods/");
+        $altRecordId->addAttribute("TYPE", "SUBMISSIONAGREEMENT");
+
+        //MODS
+        $dmdSec = $metsHdr->addChild("dmdSec");
+        $dmdSec->addAttribute("ID", "dmdSec1");
+        $mdWrap = $dmdSec->addChild("mdWrap");
+        $mdWrap->addAttribute("MDTYPE","MODS");
+        $xmlData = $mdWrap->addChild("xmlData");
+
+        //Motivera mods:mods:mods
+        $mods = $xmlData->addChild("mods:mods:mods");
+        $mods->addAttribute("xmlns:mods","http://www.loc.gov/mods/v3");
+        $mods->addAttribute("version","3.2");
+        $mods->addAttribute("xsi:schemaLocation","http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-2.xsd");
+
+        $accessCondition = $mods->addChild("mods:accessCondition","Open Access");
+        $accessCondition->addAttribute("type", "restriction on access");
 
         return $this->formatXml($mets);
 	}
