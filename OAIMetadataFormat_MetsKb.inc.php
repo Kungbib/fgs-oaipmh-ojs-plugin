@@ -16,8 +16,7 @@
 
 class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
 
-    function toXml($record, $format = null)
-    {
+    function toXml($record, $format = null) {
         $article = $record->getData('article');
         $journal = $record->getData('journal');
 
@@ -43,5 +42,4 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_MetsKb');
         return $templateMgr->fetch($plugin->getTemplateResource('record.tpl'));
     }
-
 }

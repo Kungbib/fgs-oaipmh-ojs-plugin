@@ -30,8 +30,8 @@
 			<note>URI:http://id.kb.se/organisations/xxxxxx</note>
 		</agent>
 		<agent ROLE="ARCHIVIST" TYPE="OTHER" OTHERTYPE="SOFTWARE">
-			<name>PLuginnamn...</name>
-			<note>Version 2.76</note>
+			<name>OJS e-pliktsplugin för OAI-PMH</name>
+			<note>Version 1.0</note>
 			<note>https://github.com/Kungbib/...</note>
 		</agent>
 		<altRecordID TYPE="DELIVERYTYPE">DEPOSIT</altRecordID>
@@ -62,37 +62,26 @@
 						{if $author->getData('orcid')}<mods:nameIdentifier type="orcid">{$author->getOrcid('orcid')|escape}</mods:nameIdentifier>{/if}
 					</mods:name>
 					{/foreach}
-
-					<!-- "Det namn som resursen är känd under.Repeterbart för flera olika typer av titlar. Använd inte attributet @type för huvudtiteln. Först nämnda titel utan @type behandlas alltid som huvudtitel." -->
-					<mods:titleInfo lang="eng">
-						<mods:title>Translating Neoliberalism</mods:title>
-						<mods:subTitle>The European Social Fund and the Governing of Unemployment and Social Exclusion in Malmö, Sweden</mods:subTitle>
+					<mods:titleInfo lang="{$language}">
+						<mods:title>{$article->getTitle($journal->getPrimaryLocale())|escape}</mods:title>
+						{assign var=subTitle value=$article->getSubTitle($journal->getPrimaryLocale())}
+						{if $subTitle}<mods:subTitle>{$subTitle|escape}</mods:subTitle>{/if}
 					</mods:titleInfo>
-
-					<!-- repeterbar, en för varje språk -->
-					<!-- ISO-639-2B? ISO-639-2T? ISO-639-3? (t.ex olika samiska språk)-->
-					<!-- https://www.loc.gov/standards/mods/userguide/language.html#examples -->
 					<mods:language>
-						<mods:languageTerm type="code" authority="iso639-2b">swe</mods:languageTerm>
+						<mods:languageTerm type="code" authority="iso639-2b">{$language}</mods:languageTerm>
 					</mods:language>
 					<mods:language objectPart="abstract">
-						<mods:languageTerm type="code" authority="iso639-2b">eng</mods:languageTerm>
+						<mods:languageTerm type="code" authority="iso639-2b">{$language}</mods:languageTerm>
 					</mods:language>
-
 					<mods:originInfo>
-						<!-- ej obligatoriskt -->
-						<mods:publisher>$tidskriftens-namn</mods:publisher>
-						<!-- obligatoriskt -->
-						<mods:dated encoding="w3cdtf">2012-12-13</mods:dateIssued>
+						<mods:publisher>{$journal->getName($journal->getPrimaryLocale())|escape}</mods:publisher>
+						{if $article->getDatePublished()}
+						<mods:dateIssued encoding="w3cdtf">{$article->getDatePublished()|strftime|date_format:'c'|escape}</mods:dateIssued>
+						{/if}
 					</mods:originInfo>
-
-					<!-- Hur får vi dit den  på scannade importerade artiklar? -->
-					<!-- "Normalvärde är ”born digital”(default om inget anges). Obligatoriskt för digitaliserade dokument, då med något av de tre senare kontrollerade värdena nedan." -->
-					<!-- "Kontrollerade värden: born digital, reformatted digital, digitized microfilm, digitized other analog" -->
 					<mods:physicalDescription>
 						<mods:digitalOrigin>digitized other analog</mods:digitalOrigin>
 					</mods:physicalDescription>
-
 					<!-- Minst en behövs -->
 					<!-- "När annan lämpligidentifikator saknas, använd här nätadressen (R102) nedan, med mods:identifier[@type= "uri"]." -->
 					<mods:identifier type="uri">$artikel-uri</mods:identifier>
@@ -103,23 +92,27 @@
 					<mods:relatedItem type="host">
 						<mods:genre authority="marcgt">journal</mods:genre>
 						<!-- var lagras denna i OJS? -->
+						{$journal->getName($journal->getPrimaryLocale())|escape}; {$issue->getIssueIdentification()|escape}
 						<mods:identifier type="uri">http://libris.kb.se/xxxxxxxxxxx</mods:identifier>
-						<mods:identifier type="issn">$issn</mods:identifier>
+						{if $journal->getData('onlineIssn')}
+							<mods:identifier type="issn">{$journal->getData('onlineIssn')|escape}</mods:identifier>
+						{/if}
+						{if $journal->getData('printIssn')}
+							<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
+							<subfield code="$a"></subfield>
+						{/if}
 						<mods:part>
 							<mods:detail type="issue"/>
 							<mods:detail>
-								<mods:title>"numrets" titel</mods:title>
+								<mods:title>{$issue->getLocalizedTitle()|escape}</mods:title>
 							</mods:detail>
-							<mods:date encoding="w3cdtf">...</mods:date>
+							<mods:date encoding="w3cdtf">{$issue->getDatePublished()|strftime|date_format:'c'|escape}</mods:date>
 						</mods:part>
 					</mods:relatedItem>
 
-					<!-- värdpublikation / tidskrift-->
-					<!-- taget från https://www.loc.gov/standards/mods/v3/mods-userguide-examples.html#journal_article -->
 					<mods:relatedItem type="host">
 						<mods:titleInfo>
-							<!-- https://github.com/ojsde/openAIRE/blob/d84ff938dcc5f078d72fec2f2292cf666ea51939/OAIMetadataFormat_OpenAIRE.inc.php#L62 -->
-							<mods:title lang="xxx">tidskriftens namn</mods:title>
+							<mods:title lang="{$language}">{$journal->getName($journal->getPrimaryLocale())|escape}</mods:title>
 						</mods:titleInfo>
 						<mods:titleInfo xml:lang="fr" type="translated">
 							<mods:nonSort>L'</mods:nonSort>
@@ -127,22 +120,25 @@
 						</mods:titleInfo>
 
 						<mods:part>
-							<!-- https://github.com/ojsde/openAIRE/blob/d84ff938dcc5f078d72fec2f2292cf666ea51939/OAIMetadataFormat_OpenAIRE.inc.php#L129 -->
 							<mods:detail type="volume">
-								<mods:number>3</mods:number>
+								<mods:number>{$issue->getVolume()|escape}</mods:number>
 								<mods:caption>vol.</mods:caption>
 							</mods:detail>
 							<mods:detail type="number">
-								<mods:number>1</mods:number>
+								<mods:number>{$issue->getNumber()|escape}</mods:number>
 								<mods:caption>no.</mods:caption>
 							</mods:detail>
 							<mods:extent unit="page">
 								<mods:start>53</mods:start>
 								<mods:end>57</mods:end>
 							</mods:extent>
-							<mods:date encoding="w3cdtf">...</mods:date>
+							{if $issue->getDatePublished()}
+								<mods:date encoding="w3cdtf">{$issue->getDatePublished()|strftime|date_format:'c'|escape}</mods:date>
+							{/if}
 						</mods:part>
-						<mods:identifier type="issn">1531-2542</mods:identifier>
+						{if $journal->getData('printIssn')}
+						<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
+						{/if}
 						<mods:identifier type="uri">http://libris.kb.se/xxxxxxxxxxx</mods:identifier>
 					</mods:relatedItem>
 
