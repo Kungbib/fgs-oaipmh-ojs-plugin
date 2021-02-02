@@ -17,16 +17,35 @@
 class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
 
     function toXml($record, $format = null) {
+        $request = Application::getRequest();
         $article = $record->getData('article');
         $journal = $record->getData('journal');
+        $keywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
+        $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array(AppLocale::getLocale()));
+        $galleys = $article->getGalleys();
+        $file = null;
+        foreach ($galleys as $galley) {
+            $galleyProps = Services::get('galley')->getSummaryProperties($galley,array(
+                'request' => $request) );
+
+                foreach ($galley->getRepresentationFiles() as $file) {
+                    $file = $file;
+                }
+        }
+
 
         $templateMgr = TemplateManager::getManager();
         $templateMgr->assign(array(
             'journal' => $journal,
             'article' => $article,
             'issue' => $record->getData('issue'),
-            'section' => $record->getData('section')
+            'section' => $record->getData('section'),
+            'keywords' => $keywords[$journal->getPrimaryLocale()],
+            'galleyProps' => $galleyProps,
+            'file' => $file
         ));
+
+//        ['18-1']->_data["originalFileName"]
 
         $subjects = array_merge_recursive(
             stripAssocArray((array)$article->getDiscipline(null)),

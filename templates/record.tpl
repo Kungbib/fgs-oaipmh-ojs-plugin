@@ -17,7 +17,7 @@
 	  PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml">
 	<metsHdr RECORDSTATUS="VERSION" CREATEDATE="2020-03-02T12:26:08.725+01:00">
 		<agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
-			<name>$tidskriftens-namn</name>
+			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
 			<note>URI:http://id.kb.se/organisations/xxxxxx</note>
 		</agent>
 
@@ -88,7 +88,6 @@
 					<!-- DOI! -->
 					<mods:identifier type="doi">doi:10.1006/jmbi.1995.0238</mods:identifier>
 
-					<!-- värdpublikation / tidskrift-->
 					<mods:relatedItem type="host">
 						<mods:genre authority="marcgt">journal</mods:genre>
 						<!-- var lagras denna i OJS? -->
@@ -114,10 +113,6 @@
 						<mods:titleInfo>
 							<mods:title lang="{$language}">{$journal->getName($journal->getPrimaryLocale())|escape}</mods:title>
 						</mods:titleInfo>
-						<mods:titleInfo xml:lang="fr" type="translated">
-							<mods:nonSort>L'</mods:nonSort>
-							<mods:title>homme qui voulut être roi</mods:title>
-						</mods:titleInfo>
 
 						<mods:part>
 							<mods:detail type="volume">
@@ -129,8 +124,8 @@
 								<mods:caption>no.</mods:caption>
 							</mods:detail>
 							<mods:extent unit="page">
-								<mods:start>53</mods:start>
-								<mods:end>57</mods:end>
+								<mods:start>{$article->getStartingPage()}</mods:start>
+								<mods:end>{$article->getEndingPage()}</mods:end>
 							</mods:extent>
 							{if $issue->getDatePublished()}
 								<mods:date encoding="w3cdtf">{$issue->getDatePublished()|strftime|date_format:'c'|escape}</mods:date>
@@ -142,40 +137,26 @@
 						<mods:identifier type="uri">http://libris.kb.se/xxxxxxxxxxx</mods:identifier>
 					</mods:relatedItem>
 
-					<!-- Ämesord: https://www.loc.gov/standards/mods/userguide/subject.html -->
-					<!-- Ämnesord från "ej kontrollerad lista" -->
-					<mods:subject lang="eng">
-						<mods:topic>The European Social Fund</mods:topic>
-					</mods:subject>
-					<!-- Ämnesord med kod för ämnesordssystem -->
-					<mods:subject lang="eng" authority="hsv">
-						<mods:topic>Social Sciences</mods:topic>
-					</mods:subject>
-					<mods:subject lang="swe" authority="hsv">
-						<mods:topic>Samhällsvetenskap</mods:topic>
-					</mods:subject>
-					<!-- Länkat ämnesord (authority är optional/överflödig egentligen) -->
-					<!-- Kan man skippa benämning också? eftersom vi eg vill ha länkad data -->
-					<mods:subject>
-						<mods:topic authority="lcsh" valueURI="http://id.loc.gov/authorities/subjects/sh85075538">Learning disabilities</mods:topic>
-					</mods:subject>
-					<mods:subject>
-						<mods:topic valueURI="https://id.kb.se/term/sao/H%C3%A4star">Hästar</mods:topic>
-					</mods:subject>
+					{foreach $keywords as $k}
+							<mods:subject lang="eng">
+								<mods:topic>{$k}</mods:topic>
+							</mods:subject>
+					{/foreach}
 
-					<!-- Abstract -->
-					<mods:abstract lang="eng">&lt;p&gt;This thesis is concerned with how the governing
-						of unemployment and social exclusion is accomplished through labor market
-						projects that are initiated, tailored...
+					{if $abstract}
+					<mods:abstract lang="{$language}">
+						{$abstract|escape}
 					</mods:abstract>
-
-					<!-- https://www.loc.gov/standards/mods/userguide/location.html#url -->
+					{/if}
+{*					<!-- https://www.loc.gov/standards/mods/userguide/location.html#url -->*}
 					<mods:location>
-						<!-- hårdkoda dessa värden eller? -->
+{*						<!-- hårdkoda dessa värden eller? -->*}
 						<mods:url displayLabel="fulltext" note="free" access="raw object">
-							http://mau.diva-portal.org/smash/get/diva2:1404314/FULLTEXT01
+							{$galleyProps["urlPublished"]|escape}
 						</mods:url>
 					</mods:location>
+
+{*					$journal->getSupportedLocales()*}
 
 					<!-- de här är lite oklara -->
 					<!-- https://www.loc.gov/standards/mods/userguide/recordinfo.html#recordcontentsource -->
@@ -191,6 +172,23 @@
 			</xmlData>
 		</mdWrap>
 	</dmdSec>
-
-
+	<structMap TYPE="physical">
+		<div TYPE="files">
+			<div TYPE="publication">
+				<fptr FILEID="{$file->getFileId()}"/>
+			</div>
+		</div>
+	</structMap>
+	<fileSec>
+		<fileGrp>
+			<file ID="{$file->getFileId()}" MIMETYPE="{$file->getFileType()}"
+				  USE="Acrobat PDF 1.6 - Portable Document Format;1.6;PRONOM:fmt/20"
+				  SIZE="{$file->getFileSize()}"
+				  CREATED="2020-02-28T14:26:51.278+01:00"
+				  CHECKSUM="b4734becc7a64555c2722743c66f0d6b94c781814be6f3812cbc6f066032c9e17dfeba59421599f3ea4f42afde5e43942aec2ef5618ef45b7bd96d95e377a36d"
+				  CHECKSUMTYPE="SHA-512">
+				<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="file:{$file->getClientFileName()}"/>
+			</file>
+		</fileGrp>
+	</fileSec>
 </mets>
