@@ -22,17 +22,18 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $journal = $record->getData('journal');
         $keywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
         $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array(AppLocale::getLocale()));
+        $pdfGalley = null;
+        $galleyProps = null;
         $galleys = $article->getGalleys();
-        $file = null;
+
+        //Assert only one galley per article?
         foreach ($galleys as $galley) {
-            $galleyProps = Services::get('galley')->getSummaryProperties($galley,array(
-                'request' => $request) );
-
-                foreach ($galley->getRepresentationFiles() as $file) {
-                    $file = $file;
-                }
+            if($galley->getFileType() == 'application/pdf') {
+                $galleyProps = Services::get('galley')->getSummaryProperties($galley,array(
+                    'request' => $request));
+                $pdfGalley = $galley;
+            }
         }
-
 
         $templateMgr = TemplateManager::getManager();
         $templateMgr->assign(array(
@@ -42,10 +43,8 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
             'section' => $record->getData('section'),
             'keywords' => $keywords[$journal->getPrimaryLocale()],
             'galleyProps' => $galleyProps,
-            'file' => $file
+            'file' => $pdfGalley->getFile()
         ));
-
-//        ['18-1']->_data["originalFileName"]
 
         $subjects = array_merge_recursive(
             stripAssocArray((array)$article->getDiscipline(null)),
