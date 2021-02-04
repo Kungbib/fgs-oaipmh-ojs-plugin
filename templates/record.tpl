@@ -81,36 +81,15 @@
 					{if $article->getStoredPubId('doi')}
 						<mods:identifier type="doi">doi:{$article->getStoredPubId('doi')|escape}</mods:identifier>
 					{/if}
-					{if $article->getStoredPubId('doi')}
-						<mods:identifier type="uri">$artikel-uri</mods:identifier>
-					{/if}
-
-					<mods:relatedItem type="host">
-						<mods:genre authority="marcgt">journal</mods:genre>
-						<!-- var lagras denna i OJS? -->
-{*						Typ den seriella resursen*}
-						<mods:identifier type="uri">http://libris.kb.se/xxxxxxxxxxx</mods:identifier>
-						{if $journal->getData('onlineIssn')}
-							<mods:identifier type="issn">{$journal->getData('onlineIssn')|escape}</mods:identifier>
-						{/if}
-						{if $journal->getData('printIssn')}
-							<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
-						{/if}
-						<mods:part>
-							<mods:detail type="issue"/>
-							<mods:detail>
-								<mods:title>{$issue->getLocalizedTitle()|escape}</mods:title>
-							</mods:detail>
-							<mods:date encoding="w3cdtf">{$issue->getDatePublished()|strftime|date_format:'c'|escape}</mods:date>
-						</mods:part>
-					</mods:relatedItem>
 
 					<mods:relatedItem type="host">
 						<mods:titleInfo>
 							<mods:title lang="{$language}">{$journal->getName($journal->getPrimaryLocale())|escape}</mods:title>
 						</mods:titleInfo>
-
 						<mods:part>
+							<mods:detail type="issue">
+								<mods:title>{$issue->getLocalizedTitle()|escape}</mods:title>
+							</mods:detail>
 							<mods:detail type="volume">
 								<mods:number>{$issue->getVolume()|escape}</mods:number>
 								<mods:caption>vol.</mods:caption>
@@ -127,17 +106,18 @@
 								<mods:date encoding="w3cdtf">{$issue->getDatePublished()|strftime|date_format:'c'|escape}</mods:date>
 							{/if}
 						</mods:part>
-						{if $journal->getData('printIssn')}
-						<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
+						{if $journal->getData('onlineIssn')}
+							<mods:identifier type="issn">{$journal->getData('onlineIssn')|escape}</mods:identifier>
+						{elseif $journal->getData('printIssn')}
+							<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
 						{/if}
-{*						tidskrift, record in libris to link to*}
 						<mods:identifier type="uri">http://libris.kb.se/xxxxxxxxxxx</mods:identifier>
 					</mods:relatedItem>
 
-					{foreach $keywords as $k}
-							<mods:subject lang="eng">
-								<mods:topic>{$k}</mods:topic>
-							</mods:subject>
+					{foreach $keywords as $keyword}
+						<mods:subject lang="{$language}">
+							<mods:topic>{$keyword}</mods:topic>
+						</mods:subject>
 					{/foreach}
 
 					{if $abstract}
@@ -166,6 +146,9 @@
 	<fileSec>
 {*		Fler filer skulle ge fler file groups här enligt https://www.loc.gov/standards/mets/METSOverview.v2.html#filegrp
 		t.ex. en grupp för varje version av en fil/galley
+		Inom varje filegroup kan det finnas flera filer
+		(se http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf).
+		De får då varsin fptr med id ovan.
 *}
 		<fileGrp>
 			<file ID="{$file->getFileId()}" MIMETYPE="{$file->getFileType()}"
