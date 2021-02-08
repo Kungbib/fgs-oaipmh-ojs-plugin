@@ -25,9 +25,13 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $pdfGalley = null;
         $galleyProps = null;
         $galleys = $article->getGalleys();
+        $pluginName = "OJS e-pliktsplugin för OAI-PMH";
+        $pluginVersion = "1.0";
+        $pluginUrl = "https://github.com/Kungbib/...";
 
         //Assert only one galley per article?
         foreach ($galleys as $galley) {
+        //Support html galleys as well?
             if($galley->getFileType() == 'application/pdf') {
                 $galleyProps = Services::get('galley')->getSummaryProperties($galley,array(
                     'request' => $request));
@@ -43,16 +47,13 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
             'section' => $record->getData('section'),
             'keywords' => $keywords[$journal->getPrimaryLocale()],
             'galleyProps' => $galleyProps,
-            'file' => $pdfGalley->getFile()
+            'file' => $pdfGalley->getFile(),
+            'pluginName' => $pluginName,
+            'pluginVersion' => $pluginVersion,
+            'pluginUrl' => $pluginUrl
         ));
 
-        $subjects = array_merge_recursive(
-            stripAssocArray((array)$article->getDiscipline(null)),
-            stripAssocArray((array)$article->getSubject(null))
-        );
-
         $templateMgr->assign(array(
-            'subject' => isset($subjects[$journal->getPrimaryLocale()]) ? $subjects[$journal->getPrimaryLocale()] : '',
             'abstract' => PKPString::html2text($article->getAbstract($article->getLocale())),
             'language' => AppLocale::get3LetterIsoFromLocale($article->getLocale())
         ));

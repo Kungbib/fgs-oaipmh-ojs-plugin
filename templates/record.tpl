@@ -11,9 +11,9 @@
 	  xmlns:xlink="http://www.w3.org/1999/xlink"
 	  xmlns:mods="http://www.loc.gov/mods/v3"
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	  OBJID="$ett-unikt-id"
+	  OBJID="doi:{$article->getStoredPubId('doi')|escape}"
 	  TYPE="SIP"
-	  LABEL="$titel"
+	  LABEL="{$article->getTitle($journal->getPrimaryLocale())|escape}"
 	  PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml">
 	<metsHdr RECORDSTATUS="VERSION" CREATEDATE="2020-03-02T12:26:08.725+01:00">
 		<agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
@@ -25,9 +25,9 @@
 			<note>URI:http://id.kb.se/organisations/xxxxxx</note>
 		</agent>
 		<agent ROLE="ARCHIVIST" TYPE="OTHER" OTHERTYPE="SOFTWARE">
-			<name>OJS e-pliktsplugin för OAI-PMH</name>
-			<note>Version 1.0</note>
-			<note>https://github.com/Kungbib/...</note>
+			<name>{$pluginName}</name>
+			<note>Version: {$pluginVersion}</note>
+			<note>{$pluginUrl}</note>
 		</agent>
 		<altRecordID TYPE="DELIVERYTYPE">DEPOSIT</altRecordID>
 		<altRecordID TYPE="DELIVERYSPECIFICATION">http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf</altRecordID>
@@ -114,6 +114,7 @@
 						<mods:identifier type="uri">http://libris.kb.se/xxxxxxxxxxx</mods:identifier>
 					</mods:relatedItem>
 
+{*					language per keyword? now uses article language*}
 					{foreach $keywords as $keyword}
 						<mods:subject lang="{$language}">
 							<mods:topic>{$keyword}</mods:topic>
@@ -125,10 +126,8 @@
 						{$abstract|escape}
 					</mods:abstract>
 					{/if}
-{*					<!-- https://www.loc.gov/standards/mods/userguide/location.html#url -->*}
 					<mods:location>
-{*						<!-- hårdkoda dessa värden eller? -->*}
-						<mods:url displayLabel="fulltext" note="free" access="raw object">
+						<mods:url displayLabel="fulltext" access="raw object">
 							{$galleyProps["urlPublished"]|escape}
 						</mods:url>
 					</mods:location>
