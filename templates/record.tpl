@@ -18,11 +18,11 @@
 	<metsHdr RECORDSTATUS="VERSION" CREATEDATE="2020-03-02T12:26:08.725+01:00">
 		<agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
 			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
-			<note>URI:http://id.kb.se/organisations/xxxxxx</note>
+			<note>URI:{$archivistUri}</note>
 		</agent>
 		<agent ROLE="CREATOR" TYPE="ORGANIZATION">
 			<name>{{$journal->getName($journal->getPrimaryLocale())|escape}}</name>
-			<note>URI:http://id.kb.se/organisations/xxxxxx</note>
+			<note>URI:{$creatorUri}</note>
 		</agent>
 		<agent ROLE="ARCHIVIST" TYPE="OTHER" OTHERTYPE="SOFTWARE">
 			<name>{$pluginName}</name>
@@ -42,7 +42,6 @@
 					<mods:accessCondition>gratis</mods:accessCondition>
 					<mods:genre>journal article</mods:genre>
 					<mods:typeOfResource valueURI="https://id.kb.se/term/rda/Text">text</mods:typeOfResource>
-					<mods:typeOfResource valueURI="http://id.loc.gov/vocabulary/contentTypes/txt">text</mods:typeOfResource>
 
 					{assign var=authors value=$article->getAuthors()}
 					{foreach from=$authors item=author}
@@ -75,9 +74,9 @@
 						{/if}
 					</mods:originInfo>
 {*					Separat spår med inscannade gamla artiklar? *}
-					<mods:physicalDescription>
-						<mods:digitalOrigin>digitized other analog</mods:digitalOrigin>
-					</mods:physicalDescription>
+{*					<mods:physicalDescription>*}
+{*						<mods:digitalOrigin>digitized other analog</mods:digitalOrigin>*}
+{*					</mods:physicalDescription>*}
 					{if $article->getStoredPubId('doi')}
 						<mods:identifier type="doi">doi:{$article->getStoredPubId('doi')|escape}</mods:identifier>
 					{/if}

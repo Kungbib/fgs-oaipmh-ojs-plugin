@@ -27,9 +27,10 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $galleys = $article->getGalleys();
         $pluginName = "OJS e-pliktsplugin för OAI-PMH";
         $pluginVersion = "1.0";
-        $pluginUrl = "https://github.com/Kungbib/...";
+        $pluginUrl = "https://github.com/Kungbib/TBD";
+        $orgId = "fixme";
+        $archivistUri = "http://id.kb.se/organisations/SE-".$orgId;
 
-        //Assert only one galley per article?
         foreach ($galleys as $galley) {
         //Support html galleys as well?
             if($galley->getFileType() == 'application/pdf') {
@@ -50,7 +51,9 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
             'file' => $pdfGalley->getFile(),
             'pluginName' => $pluginName,
             'pluginVersion' => $pluginVersion,
-            'pluginUrl' => $pluginUrl
+            'pluginUrl' => $pluginUrl,
+            'archivistUri' => $archivistUri,
+            'creatorUri' => $archivistUri
         ));
 
         $templateMgr->assign(array(
