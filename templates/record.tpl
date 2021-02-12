@@ -110,7 +110,9 @@
 						{elseif $journal->getData('printIssn')}
 							<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
 						{/if}
-						<mods:identifier type="uri">http://libris.kb.se/xxxxxxxxxxx</mods:identifier>
+						{if $journal->getData('journalLibrisUri')}
+							<mods:identifier type="uri">{$journal->getData('journalLibrisUri')}</mods:identifier>
+						{/if}
 					</mods:relatedItem>
 
 {*					language per keyword? now uses article language*}

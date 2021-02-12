@@ -30,7 +30,11 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $pluginUrl = "https://github.com/Kungbib/TBD";
 
         // Requires activated organization URI plugin
-        $orgUri = $journal->getData('organisationUri');
+        if ($journal->getData('organisationUri')) {
+            $orgUri = $journal->getData('organisationUri');
+        } else {
+            $orgUri = "fixme";
+        }
 
         foreach ($galleys as $galley) {
         //Support html galleys as well?
