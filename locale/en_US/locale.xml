@@ -12,13 +12,6 @@
   -->
 
 <locale name="en_US" full_name="U.S. English">
-	<message key="plugins.generic.metsKb.displayName">MetsKb</message>
-	<message key="plugins.generic.metsKb.description">Is this part really needed? Maybe only publish as oaiMetadata plugin</message>
-
-  <message key="plugins.oaiMetadata.metsKb.displayName">Kb's metadataformat som är anpassat till E-plikt.</message>
-  <message key="plugins.oaiMetadata.metsKb.description">Structures metadata to fit the e-plikt</message>
-
-  <message key="plugins.generic.metsKb.resourceType.title">Type of articles published in this section</message>
-  <message key="plugins.generic.metsKb.resourceType.description"><![CDATA[For better OpenAIRE compliance, uses COAR Resource Type Genres <a target="_new" href="http://vocabularies.coar-repositories.org/documentation/resource_types/2.0.draft/">http://vocabularies.coar-repositories.org/documentation/resource_types/2.0.draft/</a>]]></message>
-
+  <message key="plugins.oaiMetadata.metsKb.displayName">FGS-PUBL METS/MODS OAI metadata</message>
+  <message key="plugins.oaiMetadata.metsKb.description">Structures metadata in way that is suitable for harvesting by the National Library of Sweden</message>
 </locale>

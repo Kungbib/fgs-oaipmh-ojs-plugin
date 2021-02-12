@@ -17,7 +17,7 @@ import('lib.pkp.classes.plugins.OAIMetadataFormatPlugin');
 import('plugins.oaiMetadataFormats.metsKb.OAIMetadataFormat_MetsKb');
 
 class OAIMetadataFormatPlugin_MetsKb extends OAIMetadataFormatPlugin {
-	/**
+    /**
 	 * Get the name of this plugin. The name must be unique within
 	 * its category.
 	 * @return String name of plugin

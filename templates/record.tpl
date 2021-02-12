@@ -5,7 +5,7 @@
  * Copyright (c) 2003-2020 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
- * Mets metadata record for an article
+ * METS/MODS metadata record for an article
  *}
 <mets xmlns="http://www.loc.gov/METS/"
 	  xmlns:xlink="http://www.w3.org/1999/xlink"
