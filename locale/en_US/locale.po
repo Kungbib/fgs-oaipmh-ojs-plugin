@@ -1,0 +1,6 @@
+
+msgid "plugins.oaiMetadata.metsKb.displayName"
+msgstr "FGS-PUBL METS/MODS OAI metadata"
+
+msgid "plugins.oaiMetadata.metsKb.description"
+msgstr "Structures metadata in way that is suitable for harvesting by the National Library of Sweden"
