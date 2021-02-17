@@ -3,4 +3,5 @@
 .buildpath
 .settings
 .DS_Store
+.idea
 ._*
