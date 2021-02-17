@@ -1,0 +1,12 @@
+
+msgid "plugins.generic.orgUri.displayName"
+msgstr "Organisation URI"
+
+msgid "plugins.generic.orgUri.description"
+msgstr "Add organisation URI to journal masthead"
+
+msgid "plugins.generic.orgUri.organisationUri"
+msgstr "Organisation URI"
+
+msgid "plugins.generic.orgUri.journalLibrisUri"
+msgstr "Libris URI"

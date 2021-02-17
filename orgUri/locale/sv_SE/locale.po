@@ -1,0 +1,12 @@
+
+msgid "plugins.generic.orgUri.displayName"
+msgstr "Organisations-URI"
+
+msgid "plugins.generic.orgUri.description"
+msgstr "Lägg till organisations-URI för tidskriften"
+
+msgid "plugins.generic.orgUri.organisationUri"
+msgstr "Organisations-URI"
+
+msgid "plugins.generic.orgUri.journalLibrisUri"
+msgstr "Libris URI"
