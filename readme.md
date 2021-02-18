@@ -3,7 +3,7 @@
 
 About
 -----
-This repository contains two plugins for the open source publishing platform Open Journal Systems (OJS). The first plugin (in the folder fgsMetsMods) adds a new metadata format that follows the [FGS-PUBL specification](http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS%5Fenligt%5FFGS-PUBL.pdf) used by the National Library of Sweden for harvesting metadata and downloading article galleys. The metadata is exposed through an OAI-PMH endpoint for each journal. The second plugin, which should be used in tandem with the first, adds some extra fields and options to to the journal publishing settings.
+This repository contains two plugins for the open source publishing platform Open Journal Systems (OJS). [The first plugin](fgsMetsMods) adds a new metadata format that follows the [FGS-PUBL specification](http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS%5Fenligt%5FFGS-PUBL.pdf) used by the National Library of Sweden for harvesting metadata and downloading article galleys. The metadata is exposed through an OAI-PMH endpoint for each journal. [The second plugin](orgUri), which should be used in tandem with the first, adds some extra fields and options to to the journal publishing settings.
 
 Installation
 ------------
