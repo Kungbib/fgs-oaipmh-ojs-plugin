@@ -3,14 +3,22 @@
 
 About
 -----
-Minimal plugin for Open Journal Systems that adds an Organisation URI and a Libris URI field to publishing section under journal settings. 
-These values are used for metadata harvesting in combination with the FGS-PUBL METS/MODS plugin (url).
+This repository contains two plugins for the open source publishing platform Open Journal Systems (OJS). The first plugin (in the folder fgsMetsMods) adds a new metadata format that follows the FGS-PUBL specification (http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf) used by the National Library of Sweden for harvesting metadata and downloading storing article galleys. The metadata is exposed through an OAI-PMH endpoint for each journal. The second plugin, which should be used in tandem with the first, adds some extra fields and options to to the journal publishing settings.
 
-Install
--------
-Download and unzip the latest release from ... . Move the contents of this repo to a new folder called 'orgUri' under plugins/generic in the OJS installation root. Set owner and permissions to 
-conform to the rest of your OJS installation.
+Installation
+------------
+* Download and extract the latest release from https://github.com/KungBib/fgs-oaipmh-ojs-plugin/releases.
+
+* With reference to the OJS installation root, place the orgUri and fgsMetsMods folders under the plugins/generic and plugins/oaiMetadataFormats directories, respectively. 
+
+* Set owner and permissions to conform to the rest of your OJS installation.
 
 How to use the plugin
 ---------------------
-Activate the plugin at journal level in the OJS plugin section.  
+Activate the organisation URI at journal level in the OJS plugin section
+
+Once installed, the OAI-PMH format plugin is automatically activated site-wide.
+The organisation URI plugin can be activated by navigating to the OJS plugin section at the journal level.
+
+
+*
