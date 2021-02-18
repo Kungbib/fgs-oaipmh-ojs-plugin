@@ -9,7 +9,7 @@ Installation
 ------------
 * Download and extract the latest release from the [releases section](https://github.com/KungBib/fgs-oaipmh-ojs-plugin/releases).
 
-* With reference to the OJS installation root, place the orgUri and fgsMetsMods folders under the plugins/generic and plugins/oaiMetadataFormats directories, respectively. 
+* With reference to the OJS installation root, place the `orgUri` and `fgsMetsMods` folders under the `plugins/generic` and `plugins/oaiMetadataFormats` directories, respectively. 
 
 * Set owner and permissions to conform to the rest of your OJS installation.
 
