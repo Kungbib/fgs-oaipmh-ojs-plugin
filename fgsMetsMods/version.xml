@@ -2,7 +2,7 @@
 <!DOCTYPE version SYSTEM "../../../lib/pkp/dtd/pluginVersion.dtd">
 
 <!--
-  * plugins/generic/metsKb/version.xml
+  * plugins/generic/fgsMetsMods/version.xml
   *
   * Copyright (c) 2014-2020 Simon Fraser University
   * Copyright (c) 2003-2020 John Willinsky
@@ -11,8 +11,8 @@
   * Plugin version information.
   -->
 <version>
-	<application>metsKb</application>
+	<application>fgsMetsMods</application>
 	<type>plugins.oaiMetadataFormats</type>
-	<release>0.1.0.0</release>
+	<release>1.0.0.0</release>
 	<date>2021-01-27</date>
 </version>

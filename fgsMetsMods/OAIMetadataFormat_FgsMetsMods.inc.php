@@ -1,20 +1,20 @@
 <?php
 
 /**
- * @file OAIMetadataFormat_MetsKb.inc.php
+ * @file OAIMetadataFormat_FgsMetsMods.inc.php
  *
  * Copyright (c) 2013-2020 Simon Fraser University
  * Copyright (c) 2003-2020 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
- * @class OAIMetadataFormat_MetsKb
+ * @class OAIMetadataFormat_FgsMetsMods
  * @ingroup oai_format
  * @see OAI
  *
- * @brief OAI metadata format class -- MetsKb
+ * @brief OAI metadata format class -- FgsMetsMods
  */
 
-class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
+class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
 
     function toXml($record, $format = null) {
         $request = Application::getRequest();
@@ -29,7 +29,6 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
         $pluginVersion = "1.0";
         $pluginUrl = "https://github.com/Kungbib/TBD";
 
-        // Requires activated organization URI plugin
         if ($journal->getData('organisationUri')) {
             $orgUri = $journal->getData('organisationUri');
         } else {
@@ -66,7 +65,7 @@ class OAIMetadataFormat_MetsKb extends OAIMetadataFormat {
             'language' => AppLocale::get3LetterIsoFromLocale($article->getLocale())
         ));
 
-        $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_MetsKb');
+        $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_FgsMetsMods');
         return $templateMgr->fetch($plugin->getTemplateResource('record.tpl'));
     }
 }
