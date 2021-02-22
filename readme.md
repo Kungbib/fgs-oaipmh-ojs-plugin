@@ -11,7 +11,7 @@ Installation
 
 * With reference to the OJS installation root, place the `orgUri` and `fgsMetsMods` folders under the `plugins/generic` and `plugins/oaiMetadataFormats` directories, respectively. 
 
-* Set owner and permissions to conform to the rest of your OJS installation.
+* Set owner and permissions for the plugin folders to conform to the rest of your OJS installation.
 
 How to use the plugins
 ----------------------
