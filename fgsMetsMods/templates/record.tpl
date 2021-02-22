@@ -54,16 +54,16 @@
 						{if $author->getData('orcid')}<mods:nameIdentifier type="orcid">{$author->getOrcid('orcid')|escape}</mods:nameIdentifier>{/if}
 					</mods:name>
 					{/foreach}
-					<mods:titleInfo lang="{$language}">
-						<mods:title>{$article->getTitle($journal->getPrimaryLocale())|escape}</mods:title>
-						{assign var=subTitle value=$article->getSubTitle($journal->getPrimaryLocale())}
+					<mods:titleInfo lang="{$articleLanguage}">
+						<mods:title>{$article->getTitle($article->getLocale())|escape}</mods:title>
+						{assign var=subTitle value=$article->getSubTitle($article->getLocale())}
 						{if $subTitle}<mods:subTitle>{$subTitle|escape}</mods:subTitle>{/if}
 					</mods:titleInfo>
 					<mods:language>
-						<mods:languageTerm type="code" authority="iso639-2b">{$language}</mods:languageTerm>
+						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage}</mods:languageTerm>
 					</mods:language>
 					<mods:language objectPart="abstract">
-						<mods:languageTerm type="code" authority="iso639-2b">{$language}</mods:languageTerm>
+						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage}</mods:languageTerm>
 					</mods:language>
 					<mods:originInfo>
 						<mods:publisher>{$journal->getName($journal->getPrimaryLocale())|escape}</mods:publisher>
@@ -81,7 +81,7 @@
 
 					<mods:relatedItem type="host">
 						<mods:titleInfo>
-							<mods:title lang="{$language}">{$journal->getName($journal->getPrimaryLocale())|escape}</mods:title>
+							<mods:title lang="{$journalPrimaryLanguage}">{$journal->getName($journal->getPrimaryLocale())|escape}</mods:title>
 						</mods:titleInfo>
 						<mods:part>
 							<mods:detail type="issue">
@@ -115,13 +115,13 @@
 
 {*					language per keyword? now uses article language*}
 					{foreach $keywords as $keyword}
-						<mods:subject lang="{$language}">
+						<mods:subject lang="{$articleLanguage}">
 							<mods:topic>{$keyword}</mods:topic>
 						</mods:subject>
 					{/foreach}
 
 					{if $abstract}
-					<mods:abstract lang="{$language}">
+					<mods:abstract lang="{$articleLanguage}">
 						{$abstract|escape}
 					</mods:abstract>
 					{/if}

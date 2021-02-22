@@ -20,22 +20,17 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
         $request = Application::getRequest();
         $article = $record->getData('article');
         $journal = $record->getData('journal');
+        $orgUri = $journal->getData('organisationUri');
         $keywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
-        $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array(AppLocale::getLocale()));
+        $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array($journal->getLocale()));
         $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_FgsMetsMods');
-        $pdfGalley = null;
         $galleyProps = null;
+        $pdfGalley = null;
         $galleys = $article->getGalleys();
-
-        if ($journal->getData('organisationUri')) {
-            $orgUri = $journal->getData('organisationUri');
-        } else {
-            $orgUri = "fixme";
-        }
 
         foreach ($galleys as $galley) {
         //Support html galleys as well?
-            if($galley->getFileType() == 'application/pdf') {
+            if ($galley->getFileType() == 'application/pdf') {
                 $galleyProps = Services::get('galley')->getSummaryProperties($galley,array(
                     'request' => $request));
                 $pdfGalley = $galley;
@@ -48,7 +43,7 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'article' => $article,
             'issue' => $record->getData('issue'),
             'section' => $record->getData('section'),
-            'keywords' => $keywords[$journal->getPrimaryLocale()],
+            'keywords' => $keywords[$article->getLocale()],
             'galleyProps' => $galleyProps,
             'file' => $pdfGalley->getFile(),
             'pluginName' => $plugin->getDisplayName(),
@@ -60,7 +55,8 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
 
         $templateMgr->assign(array(
             'abstract' => PKPString::html2text($article->getAbstract($article->getLocale())),
-            'language' => AppLocale::get3LetterIsoFromLocale($article->getLocale())
+            'articleLanguage' => AppLocale::get3LetterIsoFromLocale($article->getLocale()),
+            'journalPrimaryLanguage' => AppLocale::get3LetterIsoFromLocale($journal->getPrimaryLocale())
         ));
 
         return $templateMgr->fetch($plugin->getTemplateResource('record.tpl'));
