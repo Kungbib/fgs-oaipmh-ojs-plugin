@@ -22,12 +22,10 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
         $journal = $record->getData('journal');
         $keywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
         $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array(AppLocale::getLocale()));
+        $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_FgsMetsMods');
         $pdfGalley = null;
         $galleyProps = null;
         $galleys = $article->getGalleys();
-        $pluginName = "OJS e-pliktsplugin för OAI-PMH";
-        $pluginVersion = "1.0";
-        $pluginUrl = "https://github.com/Kungbib/TBD";
 
         if ($journal->getData('organisationUri')) {
             $orgUri = $journal->getData('organisationUri');
@@ -53,9 +51,9 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'keywords' => $keywords[$journal->getPrimaryLocale()],
             'galleyProps' => $galleyProps,
             'file' => $pdfGalley->getFile(),
-            'pluginName' => $pluginName,
-            'pluginVersion' => $pluginVersion,
-            'pluginUrl' => $pluginUrl,
+            'pluginName' => $plugin->getDisplayName(),
+            'pluginVersion' => $plugin->getVersion(),
+            'pluginUrl' => $plugin->getUrl(),
             'archivistUri' => $orgUri,
             'creatorUri' => $orgUri
         ));
@@ -65,7 +63,6 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'language' => AppLocale::get3LetterIsoFromLocale($article->getLocale())
         ));
 
-        $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_FgsMetsMods');
         return $templateMgr->fetch($plugin->getTemplateResource('record.tpl'));
     }
 }

@@ -27,7 +27,7 @@
 			<note>Version: {$pluginVersion}</note>
 			<note>{$pluginUrl}</note>
 		</agent>
-		<altRecordID TYPE="DELIVERYTYPE">DEPOSIT</altRecordID>
+		<altRecordID TYPE="DELIVERYTYPE">{$journal->getData('deliveryType')}</altRecordID>
 		<altRecordID TYPE="DELIVERYSPECIFICATION">http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf</altRecordID>
 		<altRecordID TYPE="SUBMISSIONAGREEMENT">http://www.kb.se/namespace/digark/submissionagreement/oai-pmh/fgs-mods/</altRecordID>
 	</metsHdr>

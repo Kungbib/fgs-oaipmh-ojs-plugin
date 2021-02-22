@@ -1,5 +1,8 @@
 <?php
 
+use PKP\components\forms\FieldText;
+use PKP\components\forms\FieldSelect;
+
 /**
  *
  * Copyright (c) 2014-2020 Simon Fraser University
@@ -34,9 +37,16 @@ class OrgUriPlugin extends GenericPlugin {
             'multilingual' => false,
             'validation' => ['nullable']
         ];
+
+        $schema->properties->deliveryType = (object) [
+            'type' => 'string',
+            'apiSummary' => true,
+            'multilingual' => false,
+            'validation' => ['nullable']
+        ];
+
         return false;
     }
-
     public function addtoForm($hookName, $form) {
         if (!defined('FORM_MASTHEAD') || $form->id !== FORM_MASTHEAD) {
             return;
@@ -47,20 +57,40 @@ class OrgUriPlugin extends GenericPlugin {
             return;
         }
 
-        $form->addField(new \PKP\components\forms\FieldText('organisationUri', [
+        $form->addField(new FieldText('organisationUri', [
             'label' => __('plugins.generic.orgUri.organisationUri'),
             'groupId' => 'publishing',
             'value' => $context->getData('organisationUri'),
         ]));
 
-        $form->addField(new \PKP\components\forms\FieldText('journalLibrisUri', [
+        $form->addField(new FieldText('journalLibrisUri', [
             'label' => __('plugins.generic.orgUri.journalLibrisUri'),
             'groupId' => 'publishing',
             'value' => $context->getData('journalLibrisUri'),
         ]));
 
+        $deliveryOptions = [
+            [
+                'value' => 'AGREEMENT',
+                'label' => __('plugins.generic.orgUri.deliveryType.agreement')
+            ],
+            [
+                'value' => 'DEPOSIT',
+                'label' => __('plugins.generic.orgUri.deliveryType.deposit')
+            ]
+        ];
+
+        $form->addField(new FieldSelect('deliveryType', [
+            'label' => __('plugins.generic.orgUri.deliveryType'),
+            'groupId' => 'publishing',
+            'options' => $deliveryOptions,
+            'default' => 'AGREEMENT',
+            'value' => $context->getData('deliveryType'),
+        ]));
+
         return false;
     }
+
 
     /**
 	 * Get the name of this plugin. The name must be unique within

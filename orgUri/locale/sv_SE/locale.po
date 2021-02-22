@@ -10,3 +10,12 @@ msgstr "Organisations-URI"
 
 msgid "plugins.generic.orgUri.journalLibrisUri"
 msgstr "Libris URI"
+
+msgid "plugins.generic.orgUri.deliveryType"
+msgstr "Leveranstyp"
+
+msgid "plugins.generic.orgUri.deliveryType.agreement"
+msgstr "Annan överenskommelse"
+
+msgid "plugins.generic.orgUri.deliveryType.deposit"
+msgstr "E-plikt"

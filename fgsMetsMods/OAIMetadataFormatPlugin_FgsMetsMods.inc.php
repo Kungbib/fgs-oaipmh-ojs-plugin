@@ -48,10 +48,18 @@ class OAIMetadataFormatPlugin_FgsMetsMods extends OAIMetadataFormatPlugin {
 	}
 
 	static function getSchema() {
-		return 'http://www.kb.se/namespace/mets/kbse_mets_002.xsd';
+		return 'http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf';
 	}
 
 	static function getNamespace() {
 		return 'http://www.kb.se/namespace';
 	}
+
+	static function getVersion() {
+        return '1.0.0';
+    }
+
+    static function getUrl() {
+        return 'https://github.com/Kungbib/fgs-oaipmh-ojs-plugin';
+    }
 }
