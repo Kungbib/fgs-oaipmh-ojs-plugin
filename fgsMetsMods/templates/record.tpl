@@ -1,10 +1,11 @@
-{** *
+{*
  * Copyright (c) 2013-2020 Simon Fraser University
  * Copyright (c) 2003-2020 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
- * METS/MODS metadata record for an article
+ * FGS-PUBL METS/MODS metadata record for an article.
  *}
+
 <mets xmlns="http://www.loc.gov/METS/"
 	  xmlns:xlink="http://www.w3.org/1999/xlink"
 	  xmlns:mods="http://www.loc.gov/mods/v3"
@@ -36,11 +37,13 @@
 			<xmlData>
 				<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" version="3.2"
 						   xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-2.xsd">
-					<mods:accessCondition type="restriction on access" xlink:href="http://purl.org/eprint/accessRights/OpenAccess" displayLabel="Access Status">Open Access</mods:accessCondition>
+					<mods:accessCondition type="restriction on access"
+										  xlink:href="http://purl.org/eprint/accessRights/OpenAccess"
+										  displayLabel="Access Status">Open Access
+					</mods:accessCondition>
 					<mods:accessCondition>gratis</mods:accessCondition>
 					<mods:genre>journal article</mods:genre>
 					<mods:typeOfResource valueURI="https://id.kb.se/term/rda/Text">text</mods:typeOfResource>
-
 					{assign var=authors value=$article->getAuthors()}
 					{foreach from=$authors item=author}
 					<mods:name type="personal">
@@ -50,14 +53,19 @@
 							<mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
 						</mods:role>
 						{assign var=affiliation value=$author->getAffiliation($journal->getPrimaryLocale())}
-						{if $affiliation}<mods:affiliation>{$affiliation|escape}</mods:affiliation>{/if}
-						{if $author->getData('orcid')}<mods:nameIdentifier type="orcid">{$author->getOrcid('orcid')|escape}</mods:nameIdentifier>{/if}
+						{if $affiliation}
+						<mods:affiliation>{$affiliation|escape}</mods:affiliation>{/if}
+						{if $author->getData('orcid')}
+						<mods:nameIdentifier type="orcid">{$author->getOrcid('orcid')|escape}</mods:nameIdentifier>
+						{/if}
 					</mods:name>
 					{/foreach}
 					<mods:titleInfo lang="{$articleLanguage|escape}">
 						<mods:title>{$article->getTitle($article->getLocale())|escape}</mods:title>
 						{assign var=subTitle value=$article->getSubTitle($article->getLocale())}
-						{if $subTitle}<mods:subTitle>{$subTitle|escape}</mods:subTitle>{/if}
+						{if $subTitle}
+						<mods:subTitle>{$subTitle|escape}</mods:subTitle>
+						{/if}
 					</mods:titleInfo>
 					<mods:language>
 						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage|escape}</mods:languageTerm>
@@ -68,11 +76,11 @@
 					<mods:originInfo>
 						<mods:publisher>{$journal->getName($journal->getPrimaryLocale())|escape}</mods:publisher>
 						{if $article->getDatePublished()}
-							<mods:dateIssued encoding="w3cdtf">{$article->getDatePublished()|strftime|date_format:'c'|escape}</mods:dateIssued>
+						<mods:dateIssued encoding="w3cdtf">{$article->getDatePublished()|strftime|date_format:'c'|escape}</mods:dateIssued>
 						{/if}
 					</mods:originInfo>
 					{if $article->getStoredPubId('doi')}
-						<mods:identifier type="doi">doi:{$article->getStoredPubId('doi')|escape}</mods:identifier>
+					<mods:identifier type="doi">doi:{$article->getStoredPubId('doi')|escape}</mods:identifier>
 					{/if}
 					<mods:relatedItem type="host">
 						<mods:titleInfo>
@@ -95,36 +103,32 @@
 								<mods:end>{$article->getEndingPage()}</mods:end>
 							</mods:extent>
 							{if $issue->getDatePublished()}
-								<mods:date encoding="w3cdtf">{$issue->getDatePublished()|strftime|date_format:'c'|escape}</mods:date>
+							<mods:date encoding="w3cdtf">{$issue->getDatePublished()|strftime|date_format:'c'|escape}</mods:date>
 							{/if}
 						</mods:part>
 						{if $journal->getData('onlineIssn')}
-							<mods:identifier type="issn">{$journal->getData('onlineIssn')|escape}</mods:identifier>
+						<mods:identifier type="issn">{$journal->getData('onlineIssn')|escape}</mods:identifier>
 						{elseif $journal->getData('printIssn')}
-							<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
+						<mods:identifier type="issn">{$journal->getData('printIssn')|escape}</mods:identifier>
 						{/if}
 						{if $journal->getData('journalLibrisUri')}
-							<mods:identifier type="uri">{$journal->getData('journalLibrisUri')}</mods:identifier>
+						<mods:identifier type="uri">{$journal->getData('journalLibrisUri')}</mods:identifier>
 						{/if}
 					</mods:relatedItem>
-
 					{foreach $keywords as $keyword}
-						<mods:subject lang="{$articleLanguage}">
-							<mods:topic>{$keyword}</mods:topic>
-						</mods:subject>
+					<mods:subject lang="{$articleLanguage}">
+						<mods:topic>{$keyword}</mods:topic>
+					</mods:subject>
 					{/foreach}
-
 					{if $abstract}
-					<mods:abstract lang="{$articleLanguage}">
-						{$abstract|escape}
-					</mods:abstract>
+					<mods:abstract lang="{$articleLanguage}">{$abstract|escape}</mods:abstract>
 					{/if}
 					{foreach $galleyProps as $galleyProp}
-						<mods:location>
-							<mods:url displayLabel="fulltext" access="raw object">
-								{$galleyProp["urlPublished"]|escape}
-							</mods:url>
-						</mods:location>
+					<mods:location>
+						<mods:url displayLabel="fulltext" access="raw object">
+							{$galleyProp["urlPublished"]|escape}
+						</mods:url>
+					</mods:location>
 					{/foreach}
 				</mods:mods>
 			</xmlData>

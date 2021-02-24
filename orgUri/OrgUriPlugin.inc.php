@@ -51,6 +51,7 @@ class OrgUriPlugin extends GenericPlugin {
 
         return false;
     }
+
     public function addtoForm($hookName, $form) {
         if (!defined('FORM_MASTHEAD') || $form->id !== FORM_MASTHEAD) {
             return;
@@ -94,7 +95,6 @@ class OrgUriPlugin extends GenericPlugin {
 
         return false;
     }
-
 
     /**
 	 * Get the name of this plugin. The name must be unique within
