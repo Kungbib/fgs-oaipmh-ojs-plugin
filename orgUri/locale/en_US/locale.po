@@ -18,4 +18,4 @@ msgid "plugins.generic.orgUri.deliveryType.agreement"
 msgstr "Other agreement"
 
 msgid "plugins.generic.orgUri.deliveryType.deposit"
-msgstr "Deposit (e-plikt)"
+msgstr "Legal deposit (e-plikt)"

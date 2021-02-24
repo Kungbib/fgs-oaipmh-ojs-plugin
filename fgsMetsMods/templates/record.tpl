@@ -11,7 +11,7 @@
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	  OBJID="doi:{$article->getStoredPubId('doi')|escape}"
 	  TYPE="SIP"
-	  LABEL="{$article->getTitle($journal->getPrimaryLocale())|escape}"
+	  LABEL="{$article->getTitle($article->getLocale())|escape}"
 	  PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml">
 	<metsHdr RECORDSTATUS="VERSION" CREATEDATE="2020-03-02T12:26:08.725+01:00">
 		<agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
@@ -54,16 +54,16 @@
 						{if $author->getData('orcid')}<mods:nameIdentifier type="orcid">{$author->getOrcid('orcid')|escape}</mods:nameIdentifier>{/if}
 					</mods:name>
 					{/foreach}
-					<mods:titleInfo lang="{$articleLanguage}">
+					<mods:titleInfo lang="{$articleLanguage|escape}">
 						<mods:title>{$article->getTitle($article->getLocale())|escape}</mods:title>
 						{assign var=subTitle value=$article->getSubTitle($article->getLocale())}
 						{if $subTitle}<mods:subTitle>{$subTitle|escape}</mods:subTitle>{/if}
 					</mods:titleInfo>
 					<mods:language>
-						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage}</mods:languageTerm>
+						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage|escape}</mods:languageTerm>
 					</mods:language>
 					<mods:language objectPart="abstract">
-						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage}</mods:languageTerm>
+						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage|escape}</mods:languageTerm>
 					</mods:language>
 					<mods:originInfo>
 						<mods:publisher>{$journal->getName($journal->getPrimaryLocale())|escape}</mods:publisher>
@@ -71,14 +71,9 @@
 							<mods:dateIssued encoding="w3cdtf">{$article->getDatePublished()|strftime|date_format:'c'|escape}</mods:dateIssued>
 						{/if}
 					</mods:originInfo>
-{*					Separat spår med inscannade gamla artiklar? *}
-{*					<mods:physicalDescription>*}
-{*						<mods:digitalOrigin>digitized other analog</mods:digitalOrigin>*}
-{*					</mods:physicalDescription>*}
 					{if $article->getStoredPubId('doi')}
 						<mods:identifier type="doi">doi:{$article->getStoredPubId('doi')|escape}</mods:identifier>
 					{/if}
-
 					<mods:relatedItem type="host">
 						<mods:titleInfo>
 							<mods:title lang="{$journalPrimaryLanguage}">{$journal->getName($journal->getPrimaryLocale())|escape}</mods:title>
@@ -96,7 +91,7 @@
 								<mods:caption>no.</mods:caption>
 							</mods:detail>
 							<mods:extent unit="page">
-								<mods:start>{$article->getStartingPage()}</mods:start>
+								<mods:start>{$article->getStartingPage()|escape}</mods:start>
 								<mods:end>{$article->getEndingPage()}</mods:end>
 							</mods:extent>
 							{if $issue->getDatePublished()}
@@ -113,7 +108,6 @@
 						{/if}
 					</mods:relatedItem>
 
-{*					language per keyword? now uses article language*}
 					{foreach $keywords as $keyword}
 						<mods:subject lang="{$articleLanguage}">
 							<mods:topic>{$keyword}</mods:topic>
@@ -125,11 +119,13 @@
 						{$abstract|escape}
 					</mods:abstract>
 					{/if}
-					<mods:location>
-						<mods:url displayLabel="fulltext" access="raw object">
-							{$galleyProps["urlPublished"]|escape}
-						</mods:url>
-					</mods:location>
+					{foreach $galleyProps as $galleyProp}
+						<mods:location>
+							<mods:url displayLabel="fulltext" access="raw object">
+								{$galleyProp["urlPublished"]|escape}
+							</mods:url>
+						</mods:location>
+					{/foreach}
 				</mods:mods>
 			</xmlData>
 		</mdWrap>
@@ -137,24 +133,27 @@
 	<structMap TYPE="physical">
 		<div TYPE="files">
 			<div TYPE="publication">
-				<fptr FILEID="{$file->getFileId()}"/>
+				{foreach $galleys as $galley}
+				<fptr FILEID="{$galley->getFile()->getFileId()}"/>
+				{/foreach}
 			</div>
 		</div>
 	</structMap>
 	<fileSec>
-{*		Fler filer skulle ge fler file groups här enligt https://www.loc.gov/standards/mets/METSOverview.v2.html#filegrp
-		t.ex. en grupp för varje version av en fil/galley
-		Inom varje filegroup kan det finnas flera filer
-		(se http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf).
-		De får då varsin fptr med id ovan.
-*}
 		<fileGrp>
+			{foreach $galleys as $galley}
+			{assign var=file value=$galley->getFile()}
 			<file ID="{$file->getFileId()}" MIMETYPE="{$file->getFileType()}"
-				  USE="Acrobat PDF 1.6 - Portable Document Format;1.6;PRONOM:fmt/20"
+				{if $file->getFileType() == "application/pdf"}
+					USE="Portable document format (PDF)"
+				{elseif $file->getFileType() == "text/xml" or $file->getFileType() == "application/xml"}
+					USE="Extensible Markup Language (XML)"
+				{/if}
 				  SIZE="{$file->getFileSize()}"
 				  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
 				<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="file:{$file->getClientFileName()}"/>
 			</file>
+			{/foreach}
 		</fileGrp>
 	</fileSec>
 </mets>

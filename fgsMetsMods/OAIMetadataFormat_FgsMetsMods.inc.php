@@ -17,23 +17,21 @@
 class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
 
     function toXml($record, $format = null) {
-        $request = Application::getRequest();
+        $request = Application::get()->getRequest();
         $article = $record->getData('article');
         $journal = $record->getData('journal');
         $orgUri = $journal->getData('organisationUri');
         $keywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
-        $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array($journal->getLocale()));
+        $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array($article->getLocale()));
         $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_FgsMetsMods');
-        $galleyProps = null;
-        $pdfGalley = null;
+        $galleyProps = [];
+        $galleysToStore = [];
         $galleys = $article->getGalleys();
 
         foreach ($galleys as $galley) {
-        //Support html galleys as well?
-            if ($galley->getFileType() == 'application/pdf') {
-                $galleyProps = Services::get('galley')->getSummaryProperties($galley,array(
-                    'request' => $request));
-                $pdfGalley = $galley;
+            if ($galley->getFileType() == 'application/pdf' || $galley->getFileType() == 'text/xml') {
+                $galleyProps[] = Services::get('galley')->getSummaryProperties($galley, array('request' => $request));
+                $galleysToStore[] = $galley;
             }
         }
 
@@ -45,7 +43,7 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'section' => $record->getData('section'),
             'keywords' => $keywords[$article->getLocale()],
             'galleyProps' => $galleyProps,
-            'file' => $pdfGalley->getFile(),
+            'galleys' => $galleysToStore,
             'pluginName' => $plugin->getDisplayName(),
             'pluginVersion' => $plugin->getVersion(),
             'pluginUrl' => $plugin->getUrl(),

@@ -1,17 +1,19 @@
 <?php
 
 /**
+ * @file OAIMetadataFormatPlugin_FgsMetsMods.inc.php
  *
  * Copyright (c) 2014-2020 Simon Fraser University
  * Copyright (c) 2003-2020 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormatPlugin_FgsMetsMods
- * @ingroup oai_format_fgs_mets_mods
+ * @ingroup oai_format_fgsMetsMods
  * @see OAI
  *
- * @brief Mets format plugin.
+ * @brief FGS-PUBL METS/MODS format plugin.
  */
+
 import('lib.pkp.classes.plugins.OAIMetadataFormatPlugin');
 import('plugins.oaiMetadataFormats.fgsMetsMods.OAIMetadataFormat_FgsMetsMods');
 
@@ -48,7 +50,7 @@ class OAIMetadataFormatPlugin_FgsMetsMods extends OAIMetadataFormatPlugin {
 	}
 
 	static function getSchema() {
-		return 'http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf';
+		return 'http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL_mets.xsd';
 	}
 
 	static function getNamespace() {
