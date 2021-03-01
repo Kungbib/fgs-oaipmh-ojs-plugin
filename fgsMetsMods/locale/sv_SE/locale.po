@@ -1,0 +1,6 @@
+
+msgid "plugins.oaiMetadata.fgsMetsMods.displayName"
+msgstr "FGS-PUBL METS/MODS OAI-metadataplugin till OJS"
+
+msgid "plugins.oaiMetadata.fgsMetsMods.description"
+msgstr "Strukturerar metadatan på en form som passar Kungliga Bibliotekets förvaltningsgemensamma specifikation FGS-PUBL"

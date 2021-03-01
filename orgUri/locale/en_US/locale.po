@@ -1,0 +1,21 @@
+
+msgid "plugins.generic.orgUri.displayName"
+msgstr "Organisation URI"
+
+msgid "plugins.generic.orgUri.description"
+msgstr "Add organisation URI to journal masthead"
+
+msgid "plugins.generic.orgUri.organisationUri"
+msgstr "Organisation URI"
+
+msgid "plugins.generic.orgUri.journalLibrisUri"
+msgstr "Libris URI"
+
+msgid "plugins.generic.orgUri.deliveryType"
+msgstr "Delivery type"
+
+msgid "plugins.generic.orgUri.deliveryType.agreement"
+msgstr "Other agreement"
+
+msgid "plugins.generic.orgUri.deliveryType.deposit"
+msgstr "Legal deposit (e-plikt)"
