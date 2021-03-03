@@ -24,13 +24,31 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
         $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array($article->getLocale()));
         $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_FgsMetsMods');
         $galleyProps = [];
-        $galleysToStore = [];
+        $filesToStore = [];
+        $associatedFileUrls = [];
+        $associatedFiles = [];
         $galleys = $article->getGalleys();
+        $submissionFileService = Services::get('submissionFile');
 
         foreach ($galleys as $galley) {
             if ($galley->getFileType() == 'application/pdf' || $galley->getFileType() == 'text/xml') {
                 $galleyProps[] = Services::get('galley')->getSummaryProperties($galley, array('request' => $request));
-                $galleysToStore[] = $galley;
+                $filesToStore[] = $galley->getFile();
+
+                //Files embedded in XML that have been added to the galley's 'dependent files' section in the UI
+                $dependentFilesIterator = $submissionFileService->getMany([
+                    'assocTypes' => [ASSOC_TYPE_SUBMISSION_FILE],
+                    'assocIds' => [$galley->getFileId()],
+                    'fileStages' => [SUBMISSION_FILE_DEPENDENT],
+                    'includeDependentFiles' => true,
+                ]);
+
+                $dependentFiles = iterator_to_array($dependentFilesIterator);
+
+                foreach ($dependentFiles as $dependentFile) {
+                    $associatedFiles[] = $dependentFile;
+                    $associatedFileUrls[] = $request->url(null, 'article', 'download', [$article->getBestArticleId(), $galley->getBestGalleyId(), $dependentFile->getId()]);
+                }
             }
         }
 
@@ -42,7 +60,9 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'section' => $record->getData('section'),
             'keywords' => $keywords[$article->getLocale()],
             'galleyProps' => $galleyProps,
-            'galleys' => $galleysToStore,
+            'associatedFiles' => $associatedFiles,
+            'files' => array_merge($filesToStore, $associatedFiles),
+            'associatedFileUrls' => $associatedFileUrls,
             'pluginName' => $plugin->getDisplayName(),
             'pluginVersion' => $plugin->getVersion(),
             'pluginUrl' => $plugin->getUrl(),

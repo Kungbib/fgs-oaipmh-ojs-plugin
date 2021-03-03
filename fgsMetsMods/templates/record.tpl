@@ -133,6 +133,13 @@
 						</mods:url>
 					</mods:location>
 					{/foreach}
+					{foreach $associatedFileUrls as $url}
+						<mods:location>
+							<mods:url displayLabel="associated file" access="raw object">
+								{$url|escape}
+							</mods:url>
+						</mods:location>
+					{/foreach}
 				</mods:mods>
 			</xmlData>
 		</mdWrap>
@@ -140,25 +147,27 @@
 	<structMap TYPE="physical">
 		<div TYPE="files">
 			<div TYPE="publication">
-				{foreach $galleys as $galley}
-				<fptr FILEID="{$galley->getFile()->getFileId()|escape}"/>
+				{foreach $files as $file}
+				<fptr FILEID="{$file->getId()|escape}"/>
 				{/foreach}
 			</div>
 		</div>
 	</structMap>
 	<fileSec>
 		<fileGrp>
-			{foreach $galleys as $galley}
-			{assign var=file value=$galley->getFile()}
-			<file ID="{$file->getFileId()|escape}" MIMETYPE="{$file->getFileType()|escape}"
-				{if $file->getFileType() == "application/pdf"}
+			{foreach $files as $file}
+			{assign var=fileName value=$file->getData('name')}
+			{assign var=locale value=$article->getLocale()}
+				{assign var=name value=$fileName.$locale}
+			<file ID="{$file->getId()|escape}" MIMETYPE="{$file->getdata('mimetype')|escape}"
+				{if $file->getdata('mimetype') == "application/pdf"}
 					USE="Portable document format (PDF)"
-				{elseif $file->getFileType() == "text/xml" or $file->getFileType() == "application/xml"}
+				{elseif $file->getdata('mimetype') == "text/xml" or $file->getdata('mimetype') == "application/xml"}
 					USE="Extensible Markup Language (XML)"
 				{/if}
-				  SIZE="{$file->getFileSize()|escape}"
+				  SIZE=""
 				  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
-				<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="file:{$file->getClientFileName()|escape}"/>
+				<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="file:{$name|escape}"/>
 			</file>
 			{/foreach}
 		</fileGrp>
