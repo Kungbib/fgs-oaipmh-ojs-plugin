@@ -12,6 +12,7 @@
  *
  * @brief OAI metadata format class -- FgsMetsMods
  */
+import('lib.pkp.classes.file.PrivateFileManager');
 
 class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
 
@@ -24,17 +25,26 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
         $keywords = $keywordDao->getKeywords($article->getCurrentPublication()->getId(), array($article->getLocale()));
         $plugin = PluginRegistry::getPlugin('oaiMetadataFormats', 'OAIMetadataFormatPlugin_FgsMetsMods');
         $galleyProps = [];
-        $filesToStore = [];
-        $associatedFileUrls = [];
-        $associatedFiles = [];
+        $fileGroups = [];
         $galleys = $article->getGalleys();
         $submissionFileService = Services::get('submissionFile');
+        $articleUrl = $request->getDispatcher()->url($request, ROUTE_PAGE, null, 'article', 'view', $article->getId());
+        
+        $temporaryFileManager = new PrivateFileManager();
+        $basePath = $temporaryFileManager->getBasePath();
 
         foreach ($galleys as $galley) {
+            $fileGroup = [];
             if ($galley->getFileType() == 'application/pdf' || $galley->getFileType() == 'text/xml') {
-                $galleyProps[] = Services::get('galley')->getSummaryProperties($galley, array('request' => $request));
-                $filesToStore[] = $galley->getFile();
-
+                $fileUrl = $request->url(null, 'article', 'download', [$article->getBestArticleId(), $galley->getBestGalleyId(), $galley->getFile()->getId()]);
+                $fileGroup[] =
+                    [
+                        'type' => 'main',
+                        'file' => $galley->getFile(),
+                        'url' => $fileUrl,
+                        'fileSize' => filesize($basePath . "/" . $galley->getFile()->getData('path'))
+                    ];
+                
                 //Files embedded in XML that have been added to the galley's 'dependent files' section in the UI
                 $dependentFilesIterator = $submissionFileService->getMany([
                     'assocTypes' => [ASSOC_TYPE_SUBMISSION_FILE],
@@ -44,11 +54,17 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
                 ]);
 
                 $dependentFiles = iterator_to_array($dependentFilesIterator);
-
                 foreach ($dependentFiles as $dependentFile) {
-                    $associatedFiles[] = $dependentFile;
-                    $associatedFileUrls[] = $request->url(null, 'article', 'download', [$article->getBestArticleId(), $galley->getBestGalleyId(), $dependentFile->getId()]);
+                    $dependentFileUrl = $request->url(null, 'article', 'download', [$article->getBestArticleId(), $galley->getBestGalleyId(), $dependentFile->getId()]);
+                    $fileGroup[] =
+                        [
+                            'type' => 'embedded',
+                            'file' => $dependentFile,
+                            'url' => $dependentFileUrl,
+                            'fileSize' => filesize($basePath . "/" . $dependentFile->getData('path'))
+                        ];
                 }
+                $fileGroups[] = $fileGroup;
             }
         }
 
@@ -56,13 +72,12 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
         $templateMgr->assign(array(
             'journal' => $journal,
             'article' => $article,
+            'articleUrl' => $articleUrl,
             'issue' => $record->getData('issue'),
             'section' => $record->getData('section'),
             'keywords' => $keywords[$article->getLocale()],
             'galleyProps' => $galleyProps,
-            'associatedFiles' => $associatedFiles,
-            'files' => array_merge($filesToStore, $associatedFiles),
-            'associatedFileUrls' => $associatedFileUrls,
+            'fileGroups' => $fileGroups,
             'pluginName' => $plugin->getDisplayName(),
             'pluginVersion' => $plugin->getVersion(),
             'pluginUrl' => $plugin->getUrl(),

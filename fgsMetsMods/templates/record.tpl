@@ -126,49 +126,50 @@
 					{if $abstract}
 					<mods:abstract lang="{$articleLanguage|escape}">{$abstract|escape}</mods:abstract>
 					{/if}
-					{foreach $galleyProps as $galleyProp}
 					<mods:location>
-						<mods:url displayLabel="fulltext" access="raw object">
-							{$galleyProp["urlPublished"]|escape}
+						<mods:url usage="primary">
+							{$articleUrl|escape}
 						</mods:url>
 					</mods:location>
-					{/foreach}
-					{foreach $associatedFileUrls as $url}
-						<mods:location>
-							<mods:url displayLabel="associated file" access="raw object">
-								{$url|escape}
-							</mods:url>
-						</mods:location>
-					{/foreach}
 				</mods:mods>
 			</xmlData>
 		</mdWrap>
 	</dmdSec>
 	<structMap TYPE="physical">
 		<div TYPE="files">
-			<div TYPE="publication">
-				{foreach $files as $file}
-				<fptr FILEID="{$file->getId()|escape}"/>
+			{foreach $fileGroups as $fileGroup}
+				{foreach $fileGroup as $file}
+					{if $file.type == 'main'}
+						<div TYPE="publication">
+							<fptr FILEID="{$file.file->getId()|escape}"/>
+						</div>
+					{elseif $file.type == 'embedded'}
+						<div TYPE="embedded">
+							<fptr FILEID="{$file.file->getId()|escape}"/>
+						</div>
+					{/if}
 				{/foreach}
-			</div>
+			{/foreach}
 		</div>
 	</structMap>
 	<fileSec>
 		<fileGrp>
-			{foreach $files as $file}
-			{assign var=fileName value=$file->getData('name')}
-			{assign var=locale value=$article->getLocale()}
-				{assign var=name value=$fileName.$locale}
-			<file ID="{$file->getId()|escape}" MIMETYPE="{$file->getdata('mimetype')|escape}"
-				{if $file->getdata('mimetype') == "application/pdf"}
-					USE="Portable document format (PDF)"
-				{elseif $file->getdata('mimetype') == "text/xml" or $file->getdata('mimetype') == "application/xml"}
-					USE="Extensible Markup Language (XML)"
-				{/if}
-				  SIZE=""
-				  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
-				<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="file:{$name|escape}"/>
-			</file>
+			{foreach $fileGroups as $fileGroup}
+			<fileGrp>
+				{foreach $fileGroup as $fileInfo}
+					{assign var=file value=$fileInfo.file}
+					<file ID="{$file->getId()|escape}" MIMETYPE="{$file->getdata('mimetype')|escape}"
+							{if $file->getdata('mimetype') == "application/pdf"}
+								USE="Portable document format (PDF)"
+							{elseif $file->getdata('mimetype') == "text/xml" or $file->getdata('mimetype') == "application/xml"}
+								USE="Extensible Markup Language (XML)"
+							{/if}
+						  SIZE="{$fileInfo.fileSize|escape}"
+						  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
+						<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="file:{$fileInfo.url|escape}"/>
+					</file>
+				{/foreach}
+			</fileGrp>
 			{/foreach}
 		</fileGrp>
 	</fileSec>
