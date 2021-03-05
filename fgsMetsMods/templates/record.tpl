@@ -166,7 +166,7 @@
 							{/if}
 						  SIZE="{$fileInfo.fileSize|escape}"
 						  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
-						<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="file:{$fileInfo.url|escape}"/>
+						<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="{$fileInfo.url|escape}"/>
 					</file>
 				{/foreach}
 			</fileGrp>
