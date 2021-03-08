@@ -1,7 +1,7 @@
 # 
 Om insticksmodulerna
 --------------------
-Det här kodförrådet innehåller två insticksmoduler till publiceringsplattformen Open Journal Systems (OJS). [Den ena insticksmodulen](fgsMetsMods) lägger till en metadatastruktur som följer den förvaltningsgemensamma specifikationen [FGS-PUBL](http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/) i OJS OAI-PMH-gränssnitt. Detta gränssnitt kan användas av Kungliga Biblioteket för att hösta artikelmetadata och långtidslagra artiklar. [Den andra insticksmodulen](orgUri), som ska användas tillsammans med den första, lägger till extra fält (organisations-URI, Libris-ID etc) och inställningar i tidskrifternsas publiceringsgränssnitt.
+Det här kodförrådet innehåller två insticksmoduler till publiceringsplattformen Open Journal Systems (OJS). [Den ena insticksmodulen](fgsMetsMods) lägger till en metadatastruktur som följer den förvaltningsgemensamma specifikationen [FGS-PUBL](http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/) i OJS OAI-PMH-gränssnitt. Detta gränssnitt kan användas av Kungliga Biblioteket för att hösta artikelmetadata och långtidslagra artiklar. [Den andra insticksmodulen](orgUri), som ska användas tillsammans med den första, lägger till extra fält (organisations-URI, Libris-ID etc) och inställningar i tidskrifternas publiceringsgränssnitt.
 
 About the plugins
 -----------------
