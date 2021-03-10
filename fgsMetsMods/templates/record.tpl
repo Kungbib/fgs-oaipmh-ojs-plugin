@@ -14,14 +14,23 @@
 	  LABEL="{$article->getTitle($article->getLocale())|escape}"
 	  PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml">
 	<metsHdr RECORDSTATUS="VERSION" CREATEDATE="2020-03-02T12:26:08.725+01:00">
+		{assign var=publisher value=$journal->getData('publisherInstitution')}
 		<agent ROLE="ARCHIVIST" TYPE="ORGANIZATION">
+			{if $publisher}
+			<name>{$publisher|escape}</name>
+			{else}
 			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
+			{/if}
 			{if archivistUri}
 			<note>URI:{$archivistUri|escape}</note>
 			{/if}
 		</agent>
 		<agent ROLE="CREATOR" TYPE="ORGANIZATION">
-			<name>{{$journal->getName($journal->getPrimaryLocale())|escape}}</name>
+			{if $publisher}
+			<name>{$publisher|escape}</name>
+			{else}
+			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
+			{/if}
 			{if creatorUri}
 			<note>URI:{$creatorUri|escape}</note>
 			{/if}
@@ -77,7 +86,7 @@
 						<mods:languageTerm type="code" authority="iso639-2b">{$articleLanguage|escape}</mods:languageTerm>
 					</mods:language>
 					<mods:originInfo>
-						<mods:publisher>{$journal->getName($journal->getPrimaryLocale())|escape}</mods:publisher>
+						<mods:publisher>{$publisher|escape}</mods:publisher>
 						{if $article->getDatePublished()}
 						<mods:dateIssued encoding="w3cdtf">{$article->getDatePublished()|strftime|date_format:'c'|escape}</mods:dateIssued>
 						{/if}
