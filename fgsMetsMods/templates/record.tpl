@@ -47,7 +47,7 @@
 	<dmdSec ID="dmdSec1">
 		<mdWrap MDTYPE="MODS">
 			<xmlData>
-				<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" version="3.2"
+				<mods:mods xmlns="http://www.loc.gov/mods/v3" version="3.2"
 						   xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-2.xsd">
 					<mods:accessCondition type="restriction on access"
 										  xlink:href="http://purl.org/eprint/accessRights/OpenAccess"
@@ -55,7 +55,7 @@
 					</mods:accessCondition>
 					<mods:accessCondition>gratis</mods:accessCondition>
 					<mods:genre>journal article</mods:genre>
-					<mods:typeOfResource valueURI="https://id.kb.se/term/rda/Text">text</mods:typeOfResource>
+					<mods:typeOfResource>text</mods:typeOfResource>
 					{assign var=authors value=$article->getAuthors()}
 					{foreach from=$authors item=author}
 					<mods:name type="personal">
@@ -144,42 +144,44 @@
 			</xmlData>
 		</mdWrap>
 	</dmdSec>
+	<fileSec>
+		<fileGrp>
+			{foreach $fileGroups as $fileGroup}
+				<fileGrp>
+					{foreach $fileGroup as $fileInfo}
+						{assign var=file value=$fileInfo.file}
+						<file ID="{"FILE"|cat: $file->getId()|escape}" MIMETYPE="{$file->getdata('mimetype')|escape}"
+								{if $file->getdata('mimetype') == "application/pdf"}
+									USE="Portable document format (PDF)"
+								{elseif $file->getdata('mimetype') == "text/xml" or $file->getdata('mimetype') == "application/xml"}
+									USE="Extensible markup language (XML)"
+								{else}
+									USE="{$file->getdata('mimetype')|regex_replace:"#.*/#":""|upper|escape}"
+								{/if}
+							  SIZE="{$fileInfo.fileSize|escape}"
+							  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
+							<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="{$fileInfo.url|escape}"/>
+						</file>
+					{/foreach}
+				</fileGrp>
+			{/foreach}
+		</fileGrp>
+	</fileSec>
 	<structMap TYPE="physical">
 		<div TYPE="files">
 			{foreach $fileGroups as $fileGroup}
 				{foreach $fileGroup as $file}
 					{if $file.type == 'main'}
 						<div TYPE="publication">
-							<fptr FILEID="{$file.file->getId()|escape}"/>
+							<fptr FILEID="{"FILE"|cat: $file.file->getId()|escape}"/>
 						</div>
 					{elseif $file.type == 'embedded'}
 						<div TYPE="embedded">
-							<fptr FILEID="{$file.file->getId()|escape}"/>
+							<fptr FILEID="{"FILE"|cat: $file.file->getId()|escape}"/>
 						</div>
 					{/if}
 				{/foreach}
 			{/foreach}
 		</div>
 	</structMap>
-	<fileSec>
-		<fileGrp>
-			{foreach $fileGroups as $fileGroup}
-			<fileGrp>
-				{foreach $fileGroup as $fileInfo}
-					{assign var=file value=$fileInfo.file}
-					<file ID="{$file->getId()|escape}" MIMETYPE="{$file->getdata('mimetype')|escape}"
-							{if $file->getdata('mimetype') == "application/pdf"}
-								USE="Portable document format (PDF)"
-							{elseif $file->getdata('mimetype') == "text/xml" or $file->getdata('mimetype') == "application/xml"}
-								USE="Extensible Markup Language (XML)"
-							{/if}
-						  SIZE="{$fileInfo.fileSize|escape}"
-						  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
-						<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="{$fileInfo.url|escape}"/>
-					</file>
-				{/foreach}
-			</fileGrp>
-			{/foreach}
-		</fileGrp>
-	</fileSec>
 </mets>
