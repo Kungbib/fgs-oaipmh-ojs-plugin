@@ -175,8 +175,8 @@
 						<div TYPE="publication">
 							<fptr FILEID="{"FILE"|cat: $file.file->getId()|escape}"/>
 						</div>
-					{elseif $file.type == 'embedded'}
-						<div TYPE="embedded">
+					{elseif $file.type == 'supplement'}
+						<div TYPE="supplement">
 							<fptr FILEID="{"FILE"|cat: $file.file->getId()|escape}"/>
 						</div>
 					{/if}

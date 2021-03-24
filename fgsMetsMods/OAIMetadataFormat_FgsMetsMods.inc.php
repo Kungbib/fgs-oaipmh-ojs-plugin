@@ -58,7 +58,7 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
                     $dependentFileUrl = $request->url(null, 'article', 'download', [$article->getBestArticleId(), $galley->getBestGalleyId(), $dependentFile->getId()]);
                     $fileGroup[] =
                         [
-                            'type' => 'embedded',
+                            'type' => 'supplement',
                             'file' => $dependentFile,
                             'url' => $dependentFileUrl,
                             'fileSize' => filesize($basePath . "/" . $dependentFile->getData('path'))
