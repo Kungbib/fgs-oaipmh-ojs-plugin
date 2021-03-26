@@ -57,7 +57,7 @@ class OAIMetadataFormatPlugin_FgsMetsMods extends OAIMetadataFormatPlugin {
 	}
 
 	static function getVersion() {
-        return '1.0.0';
+        return '1.0.2';
     }
 
     static function getUrl() {
