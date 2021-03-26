@@ -145,27 +145,25 @@
 		</mdWrap>
 	</dmdSec>
 	<fileSec>
-		<fileGrp>
-			{foreach $fileGroups as $fileGroup}
-				<fileGrp>
-					{foreach $fileGroup as $fileInfo}
-						{assign var=file value=$fileInfo.file}
-						<file ID="{"FILE"|cat: $file->getId()|escape}" MIMETYPE="{$file->getdata('mimetype')|escape}"
-								{if $file->getdata('mimetype') == "application/pdf"}
-									USE="Portable document format (PDF)"
-								{elseif $file->getdata('mimetype') == "text/xml" or $file->getdata('mimetype') == "application/xml"}
-									USE="Extensible markup language (XML)"
-								{else}
-									USE="{$file->getdata('mimetype')|regex_replace:"#.*/#":""|upper|escape}"
-								{/if}
-							  SIZE="{$fileInfo.fileSize|escape}"
-							  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
-							<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="{$fileInfo.url|escape}"/>
-						</file>
-					{/foreach}
-				</fileGrp>
-			{/foreach}
-		</fileGrp>
+		{foreach $fileGroups as $fileGroup}
+			<fileGrp>
+				{foreach $fileGroup as $fileInfo}
+					{assign var=file value=$fileInfo.file}
+					<file ID="{"FILE"|cat: $file->getId()|escape}" MIMETYPE="{$file->getdata('mimetype')|escape}"
+							{if $file->getdata('mimetype') == "application/pdf"}
+								USE="Portable document format (PDF)"
+							{elseif $file->getdata('mimetype') == "text/xml" or $file->getdata('mimetype') == "application/xml"}
+								USE="Extensible markup language (XML)"
+							{else}
+								USE="{$file->getdata('mimetype')|regex_replace:"#.*/#":""|upper|escape}"
+							{/if}
+						  SIZE="{$fileInfo.fileSize|escape}"
+						  CREATED="{$file->getDateModified()|strftime|date_format:'c'|escape}">
+						<FLocat LOCTYPE="URL" xlink:type="simple" xlink:href="{$fileInfo.url|escape}"/>
+					</file>
+				{/foreach}
+			</fileGrp>
+		{/foreach}
 	</fileSec>
 	<structMap TYPE="physical">
 		<div TYPE="files">
