@@ -40,7 +40,7 @@
 			<note>Version: {$pluginVersion}</note>
 			<note>{$pluginUrl|escape}</note>
 		</agent>
-		<altRecordID TYPE="DELIVERYTYPE">{$journal->getData('deliveryType')}|escape</altRecordID>
+		<altRecordID TYPE="DELIVERYTYPE">{$journal->getData('deliveryType')|escape}</altRecordID>
 		<altRecordID TYPE="DELIVERYSPECIFICATION">http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf</altRecordID>
 		<altRecordID TYPE="SUBMISSIONAGREEMENT">http://www.kb.se/namespace/digark/submissionagreement/oai-pmh/fgs-mods/</altRecordID>
 	</metsHdr>
