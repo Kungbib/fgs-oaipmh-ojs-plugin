@@ -29,7 +29,7 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
         $galleys = $article->getGalleys();
         $submissionFileService = Services::get('submissionFile');
         $articleUrl = $request->getDispatcher()->url($request, ROUTE_PAGE, null, 'article', 'view', $article->getId());
-        
+
         $temporaryFileManager = new PrivateFileManager();
         $basePath = $temporaryFileManager->getBasePath();
 
@@ -68,6 +68,19 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             }
         }
 
+        // Keyword URI's are decoded (%C3%A4 -> 'ä' etc) when saved in OJS.
+        // This code turns them back to valid URIs.
+        $kwUris = [];
+        foreach ($keywords[$article->getLocale()] as $kw) {
+            if (str_contains($kw, 'https://id.kb.se/term')) {
+                $kwFragments = explode('/', $kw);
+                $label = end($kwFragments);
+                array_pop($kwFragments);
+                array_push($kwFragments, rawurlencode($label));
+                $kwUris[] = implode('/', $kwFragments);
+            }
+        }
+
         $templateMgr = TemplateManager::getManager();
         $templateMgr->assign(array(
             'journal' => $journal,
@@ -75,7 +88,7 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'articleUrl' => $articleUrl,
             'issue' => $record->getData('issue'),
             'section' => $record->getData('section'),
-            'keywords' => $keywords[$article->getLocale()],
+            'keywords' => $kwUris,
             'galleyProps' => $galleyProps,
             'fileGroups' => $fileGroups,
             'pluginName' => $plugin->getDisplayName(),
