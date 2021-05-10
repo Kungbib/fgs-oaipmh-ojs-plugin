@@ -68,6 +68,34 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             }
         }
 
+        $linkedKeywords = [];
+        $simpleKeywords = [];
+        foreach ($keywords as $locale => $kws) {
+            $lang = AppLocale::get3LetterIsoFromLocale($locale);
+            foreach ($kws as $kw) {
+                if (str_contains($kw, 'https://id.kb.se/term')) {
+                    $kwFragments = explode('/', $kw);
+                    $label = end($kwFragments);
+                    array_pop($kwFragments);
+                    $authority = end($kwFragments);
+                    array_push($kwFragments, rawurlencode($label));
+                    $linkedKeywords[] =
+                        [
+                            'lang' => $lang,
+                            'label' => $label,
+                            'uri' => implode('/', $kwFragments),
+                            'authority' => $authority
+                        ];
+                } else {
+                    $simpleKeywords[] =
+                        [
+                            'lang' => $lang,
+                            'keyword' => $kw
+                        ];
+                }
+            }
+        }
+
         $templateMgr = TemplateManager::getManager();
         $templateMgr->assign(array(
             'journal' => $journal,
@@ -75,7 +103,8 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'articleUrl' => $articleUrl,
             'issue' => $record->getData('issue'),
             'section' => $record->getData('section'),
-            'keywords' => $keywords[$article->getLocale()],
+            'keywords' => $simpleKeywords,
+            'linkedKeywords' => $linkedKeywords,
             'galleyProps' => $galleyProps,
             'fileGroups' => $fileGroups,
             'pluginName' => $plugin->getDisplayName(),
