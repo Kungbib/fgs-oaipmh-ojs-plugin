@@ -74,16 +74,20 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             $lang = AppLocale::get3LetterIsoFromLocale($locale);
             foreach ($kws as $kw) {
                 if (str_contains($kw, 'https://id.kb.se/term')) {
-                    $kwFragments = explode('/', $kw);
-                    $label = end($kwFragments);
-                    array_pop($kwFragments);
-                    $authority = end($kwFragments);
-                    array_push($kwFragments, rawurlencode($label));
+                    $prefLabelAndUri = explode('|', $kw);
+                    $prefLabel = $prefLabelAndUri[0];
+                    $uriDecoded = end($prefLabelAndUri);
+
+                    $uriFragments = explode('/', $uriDecoded);
+                    $label = end($uriFragments);
+                    array_pop($uriFragments);
+                    $authority = end($uriFragments);
+                    array_push($uriFragments, rawurlencode($label));
                     $linkedKeywords[] =
                         [
                             'lang' => $lang,
-                            'label' => $label,
-                            'uri' => implode('/', $kwFragments),
+                            'label' => $prefLabel,
+                            'uri' => implode('/', $uriFragments),
                             'authority' => $authority
                         ];
                 } else {
