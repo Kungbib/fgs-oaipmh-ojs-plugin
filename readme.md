@@ -25,8 +25,7 @@ Open Journal Systems 3.3 or later
 
 Creating a new release
 ----------------------
-On the develop branch, bump versions in 
-`plugins/oaiMetadataFormats/fgsMetsMods/version.xml` and/or `plugins/generic/orgUri/version.xml`
+On the develop branch, bump versions in `fgsMetsMods/version.xml` and/or `orgUri/version.xml`.
 
 For the fgsMetsMods plugin also update the `getVersion()` method in `OAIMetadataFormatPlugin_FgsMetsMods.inc.php`. 
 
