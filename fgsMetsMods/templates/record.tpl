@@ -128,10 +128,23 @@
 						{/if}
 					</mods:relatedItem>
 					{foreach $keywords as $keyword}
-					<mods:subject lang="{$articleLanguage}">
-						<mods:topic>{$keyword|escape}</mods:topic>
+					<mods:subject lang="{$keyword.lang}">
+						<mods:topic>{$keyword.keyword|escape}</mods:topic>
 					</mods:subject>
 					{/foreach}
+					{* Remove when Mimer accepts the valueUri attribute *}
+					{foreach $linkedKeywords as $keyword}
+					<mods:subject lang="{$keyword.lang}" authority="{$keyword.authority}">
+						<mods:topic>{$keyword.label|escape}</mods:topic>
+					</mods:subject>
+					{/foreach}
+					{* Activate when Mimer accepts the valueUri attribute!
+					{foreach $linkedKeywords as $keyword}
+						<mods:subject lang="{$keyword.lang}">
+							<mods:topic valueUri="{$keyword.uri}">{$keyword.label}</mods:topic>
+						</mods:subject>
+					{/foreach}
+					*}
 					{if $abstract}
 					<mods:abstract lang="{$articleLanguage|escape}">{$abstract|escape}</mods:abstract>
 					{/if}

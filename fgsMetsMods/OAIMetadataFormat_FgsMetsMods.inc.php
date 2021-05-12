@@ -68,6 +68,38 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             }
         }
 
+        $linkedKeywords = [];
+        $simpleKeywords = [];
+        foreach ($keywords as $locale => $kws) {
+            $lang = AppLocale::get3LetterIsoFromLocale($locale);
+            foreach ($kws as $kw) {
+                if (str_contains($kw, 'https://id.kb.se/term')) {
+                    $prefLabelAndUri = explode('|', $kw);
+                    $prefLabel = $prefLabelAndUri[0];
+                    $uriDecoded = end($prefLabelAndUri);
+
+                    $uriFragments = explode('/', $uriDecoded);
+                    $label = end($uriFragments);
+                    array_pop($uriFragments);
+                    $authority = end($uriFragments);
+                    array_push($uriFragments, rawurlencode($label));
+                    $linkedKeywords[] =
+                        [
+                            'lang' => $lang,
+                            'label' => $prefLabel,
+                            'uri' => implode('/', $uriFragments),
+                            'authority' => $authority
+                        ];
+                } else {
+                    $simpleKeywords[] =
+                        [
+                            'lang' => $lang,
+                            'keyword' => $kw
+                        ];
+                }
+            }
+        }
+
         $templateMgr = TemplateManager::getManager();
         $templateMgr->assign(array(
             'journal' => $journal,
@@ -75,7 +107,8 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'articleUrl' => $articleUrl,
             'issue' => $record->getData('issue'),
             'section' => $record->getData('section'),
-            'keywords' => $keywords[$article->getLocale()],
+            'keywords' => $simpleKeywords,
+            'linkedKeywords' => $linkedKeywords,
             'galleyProps' => $galleyProps,
             'fileGroups' => $fileGroups,
             'pluginName' => $plugin->getDisplayName(),
