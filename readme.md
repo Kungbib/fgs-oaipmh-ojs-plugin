@@ -22,3 +22,19 @@ Once installed, the OAI-PMH format plugin is automatically activated site-wide. 
 Requirements
 ------------
 Open Journal Systems 3.3 or later
+
+Creating a new release
+----------------------
+On the develop branch, bump versions in 
+`plugins/oaiMetadataFormats/fgsMetsMods/version.xml` and/or `plugins/generic/orgUri/version.xml`
+
+For the fgsMetsMods plugin also update the `getVersion()` method in `OAIMetadataFormatPlugin_FgsMetsMods.inc.php`. 
+
+Merge the develop branch into master.
+
+In the root directory (fgs-oaipmh-ojs-plugin), create a tar file with the latest code:
+```
+tar czf fgsMetsMods.tar.gz --directory=$(pwd) fgsMetsMods/
+```
+Draft a new github-release, tag the new version (`v.<M>.<m>.<p>`) and attach relevant tar files. 
+
