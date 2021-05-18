@@ -106,4 +106,18 @@ class OrgUriPlugin extends GenericPlugin {
 	function getDescription() {
 		return __('plugins.generic.orgUri.description');
 	}
+
+	function isSitePlugin() {
+        return true;
+    }
+
+    // Can only be activated at site level.
+    function getCanEnable() {
+        return !((bool) Application::get()->getRequest()->getContext());
+    }
+
+    // Can only be deactivated at site level.
+    function getCanDisable() {
+        return !((bool) Application::get()->getRequest()->getContext());
+    }
 }
