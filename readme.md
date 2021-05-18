@@ -17,8 +17,8 @@ Installation
 
 How to use the plugins
 ----------------------
-Once installed, the OAI-PMH format plugin is automatically activated site-wide. The organisation URI plugin can be activated by navigating to the OJS plugin section at the journal level.
+Once installed, the OAI-PMH format plugin is automatically activated site-wide. The organisation URI plugin can be activated by navigating to the OJS plugin section at site level: Administration-> Site Settings-> Plugins.
 
 Requirements
 ------------
-Open Journal Systems 3.3 or later
+Open Journal Systems 3.3.0-3 or later
