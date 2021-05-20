@@ -13,6 +13,6 @@
 <version>
 	<application>fgsMetsMods</application>
 	<type>plugins.oaiMetadataFormats</type>
-	<release>1.1.0</release>
+	<release>1.1.1</release>
 	<date>2021-05-12</date>
 </version>
