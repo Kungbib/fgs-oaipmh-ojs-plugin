@@ -51,8 +51,7 @@
 						   xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-2.xsd">
 					<mods:accessCondition type="restriction on access"
 										  xlink:href="http://purl.org/eprint/accessRights/OpenAccess"
-										  displayLabel="Access Status">Open Access
-					</mods:accessCondition>
+										  displayLabel="Access Status">Open Access</mods:accessCondition>
 					<mods:accessCondition>gratis</mods:accessCondition>
 					<mods:genre>journal article</mods:genre>
 					<mods:typeOfResource>text</mods:typeOfResource>
