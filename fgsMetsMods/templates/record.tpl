@@ -9,7 +9,7 @@
 	  xmlns:xlink="http://www.w3.org/1999/xlink"
 	  xmlns:mods="http://www.loc.gov/mods/v3"
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	  OBJID="doi:{$article->getStoredPubId('doi')|escape}"
+	  OBJID="{$article->getId()|escape}"
 	  TYPE="SIP"
 	  LABEL="{$article->getTitle($article->getLocale())|escape}"
 	  PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml">
@@ -92,6 +92,10 @@
 					</mods:originInfo>
 					{if $article->getStoredPubId('doi')}
 					<mods:identifier type="doi">doi:{$article->getStoredPubId('doi')|escape}</mods:identifier>
+					{else}
+					{* Fallback alternative following (R101) in
+					 http://www.kb.se/namespace/digark/deliveryspecification/deposit/fgs-publ/mods/MODS_enligt_FGS-PUBL.pdf *}
+					<mods:identifier type="uri">{$articleUrl|escape}</mods:identifier>
 					{/if}
 					<mods:relatedItem type="host">
 						<mods:titleInfo>
@@ -148,9 +152,7 @@
 					<mods:abstract lang="{$articleLanguage|escape}">{$abstract|escape}</mods:abstract>
 					{/if}
 					<mods:location>
-						<mods:url usage="primary">
-							{$articleUrl|escape}
-						</mods:url>
+						<mods:url usage="primary">{$articleUrl|escape}</mods:url>
 					</mods:location>
 				</mods:mods>
 			</xmlData>
