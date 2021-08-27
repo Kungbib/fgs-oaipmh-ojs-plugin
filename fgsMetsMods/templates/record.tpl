@@ -9,7 +9,11 @@
 	  xmlns:xlink="http://www.w3.org/1999/xlink"
 	  xmlns:mods="http://www.loc.gov/mods/v3"
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	  OBJID="{$article->getId()|escape}"
+	  {if $article->getStoredPubId('doi')}
+	  OBJID="doi:{$article->getStoredPubId('doi')|escape}"
+	  {else}
+	  OBJID="{$altObjectId|escape}"
+	  {/if}
 	  TYPE="SIP"
 	  LABEL="{$article->getTitle($article->getLocale())|escape}"
 	  PROFILE="http://www.kb.se/namespace/mets/fgs/eARD_Paket_FGS-PUBL.xml">
@@ -102,9 +106,11 @@
 							<mods:title lang="{$journalPrimaryLanguage}">{$journal->getName($journal->getPrimaryLocale())|escape}</mods:title>
 						</mods:titleInfo>
 						<mods:part>
+							{if $issue->getLocalizedTitle()}
 							<mods:detail type="issue">
 								<mods:title>{$issue->getLocalizedTitle()|escape}</mods:title>
 							</mods:detail>
+							{/if}
 							<mods:detail type="volume">
 								<mods:number>{$issue->getVolume()|escape}</mods:number>
 								<mods:caption>vol.</mods:caption>
