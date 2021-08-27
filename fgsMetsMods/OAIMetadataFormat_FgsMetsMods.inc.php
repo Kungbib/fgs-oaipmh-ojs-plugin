@@ -29,7 +29,8 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
         $galleys = $article->getGalleys();
         $submissionFileService = Services::get('submissionFile');
         $articleUrl = $request->getDispatcher()->url($request, ROUTE_PAGE, null, 'article', 'view', $article->getId());
-        
+        $altObjectId = explode('kb.se/', $articleUrl)[1];
+
         $temporaryFileManager = new PrivateFileManager();
         $basePath = $temporaryFileManager->getBasePath();
 
@@ -105,6 +106,7 @@ class OAIMetadataFormat_FgsMetsMods extends OAIMetadataFormat {
             'journal' => $journal,
             'article' => $article,
             'articleUrl' => $articleUrl,
+            'altObjectId' => $altObjectId,
             'issue' => $record->getData('issue'),
             'section' => $record->getData('section'),
             'keywords' => $simpleKeywords,
