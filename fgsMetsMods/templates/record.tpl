@@ -25,7 +25,7 @@
 			{else}
 			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
 			{/if}
-			{if archivistUri}
+			{if $archivistUri}
 			<note>URI:{$archivistUri|escape}</note>
 			{/if}
 		</agent>
@@ -35,7 +35,7 @@
 			{else}
 			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
 			{/if}
-			{if creatorUri}
+			{if $creatorUri}
 			<note>URI:{$creatorUri|escape}</note>
 			{/if}
 		</agent>
