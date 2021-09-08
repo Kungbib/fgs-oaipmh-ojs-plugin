@@ -25,7 +25,7 @@
 			{else}
 			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
 			{/if}
-			{if archivistUri}
+			{if $archivistUri}
 			<note>URI:{$archivistUri|escape}</note>
 			{/if}
 		</agent>
@@ -35,7 +35,7 @@
 			{else}
 			<name>{$journal->getName($journal->getPrimaryLocale())|escape}</name>
 			{/if}
-			{if creatorUri}
+			{if $creatorUri}
 			<note>URI:{$creatorUri|escape}</note>
 			{/if}
 		</agent>
@@ -62,8 +62,13 @@
 					{assign var=authors value=$article->getAuthors()}
 					{foreach from=$authors item=author}
 					<mods:name type="personal">
-						<mods:namePart type="family">{$author->getFamilyName($journal->getPrimaryLocale())|escape}</mods:namePart>
+						{assign var=familyName value=$author->getFamilyName($journal->getPrimaryLocale())}
+						{if $familyName}
+						<mods:namePart type="family">{$familyName|escape}</mods:namePart>
 						<mods:namePart type="given">{$author->getGivenName($journal->getPrimaryLocale())|escape}</mods:namePart>
+						{else} {* Given name is mandatory in OJS, family name is not *}
+						<mods:namePart>{$author->getGivenName($journal->getPrimaryLocale())|escape}</mods:namePart>
+						{/if}
 						<mods:role>
 							<mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
 						</mods:role>
