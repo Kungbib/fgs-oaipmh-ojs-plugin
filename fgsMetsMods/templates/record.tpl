@@ -75,9 +75,6 @@
 						{assign var=affiliation value=$author->getAffiliation($journal->getPrimaryLocale())}
 						{if $affiliation}
 						<mods:affiliation>{$affiliation|escape}</mods:affiliation>{/if}
-						{if $author->getData('orcid')}
-						<mods:nameIdentifier type="orcid">{$author->getOrcid('orcid')|escape}</mods:nameIdentifier>
-						{/if}
 					</mods:name>
 					{/foreach}
 					<mods:titleInfo lang="{$articleLanguage|escape}">
