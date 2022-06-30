@@ -3,7 +3,7 @@
 /**
  * @file OAIMetadataFormatPlugin_FgsMetsMods.inc.php
  *
- * Copyright (c) 2021 National Library of Sweden
+ * Copyright (c) 2022 National Library of Sweden
  * Distributed under the GNU GPL v3. For full terms see LICENSE in the plugin repository root.
  *
  * @class OAIMetadataFormatPlugin_FgsMetsMods
@@ -57,7 +57,7 @@ class OAIMetadataFormatPlugin_FgsMetsMods extends OAIMetadataFormatPlugin {
 	}
 
 	static function getVersion() {
-        return '1.1.4';
+        return '1.1.5';
     }
 
     static function getUrl() {

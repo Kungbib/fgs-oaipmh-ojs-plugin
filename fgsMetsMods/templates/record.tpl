@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2021 National Library of Sweden
+ * Copyright (c) 2022 National Library of Sweden
  * Distributed under the GNU GPL v3. For full terms see LICENSE in the plugin repository root.
  *
  * FGS-PUBL METS/MODS metadata record for an article.
@@ -75,9 +75,6 @@
 						{assign var=affiliation value=$author->getAffiliation($journal->getPrimaryLocale())}
 						{if $affiliation}
 						<mods:affiliation>{$affiliation|escape}</mods:affiliation>{/if}
-						{if $author->getData('orcid')}
-						<mods:nameIdentifier type="orcid">{$author->getOrcid('orcid')|escape}</mods:nameIdentifier>
-						{/if}
 					</mods:name>
 					{/foreach}
 					<mods:titleInfo lang="{$articleLanguage|escape}">
