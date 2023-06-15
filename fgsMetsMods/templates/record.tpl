@@ -167,6 +167,7 @@
 		</mdWrap>
 	</dmdSec>
 	<fileSec>
+		{if $fileGroups}
 		{foreach $fileGroups as $fileGroup}
 			<fileGrp>
 				{foreach $fileGroup as $fileInfo}
@@ -186,6 +187,9 @@
 				{/foreach}
 			</fileGrp>
 		{/foreach}
+		{else}
+			<fileGrp></fileGrp>
+		{/if}
 	</fileSec>
 	<structMap TYPE="physical">
 		<div TYPE="files">
