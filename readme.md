@@ -9,11 +9,11 @@ This repository contains two plugins for the open source publishing platform Ope
 
 Installation
 ------------
-* Download and extract the latest release from the [releases section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/releases).
+* Download latest release from the [releases section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/releases).
 
-* With reference to the OJS installation root, place the `orgUri` and `fgsMetsMods` folders under the `plugins/generic` and `plugins/oaiMetadataFormats` directories, respectively.
+* Install via the OJS UI: Administration-> Settings -> Website -> Plugins -> Upload A New Plugin.
 
-* Set owner and permissions for the plugin folders to conform to the rest of your OJS installation.
+* Upgrade to a new version by selecting the plugin in the plugin list and click 'Upgrade'.
 
 How to use the plugins
 ----------------------
@@ -35,3 +35,6 @@ tar czf fgsMetsMods.tar.gz --directory=$(pwd) fgsMetsMods/
 ```
 Draft a new github-release, tag the new version (`v.<M>.<m>.<p>`) and attach relevant tar files. 
 
+Local development
+----------------------
+Run the docker version of OJS by following the README at https://github.com/pkp/docker-ojs. Follow the instructions in the [installation section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/edit/master/readme.md#installation) to get the plugins up and running.
