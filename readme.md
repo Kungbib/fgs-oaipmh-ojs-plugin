@@ -37,4 +37,4 @@ Draft a new github-release, tag the new version (`v.<M>.<m>.<p>`) and attach rel
 
 Local development
 ----------------------
-Run the docker version of OJS by following the README at https://github.com/pkp/docker-ojs. Follow the instructions in the [installation section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/edit/master/readme.md#installation) to get the plugins up and running.
+Run the docker version of OJS by following the README at https://github.com/pkp/docker-ojs. Follow the instructions in the [installation section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/tree/master#installation) to get the plugins up and running.
