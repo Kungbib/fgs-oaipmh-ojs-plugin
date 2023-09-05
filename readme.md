@@ -9,7 +9,7 @@ This repository contains two plugins for the open source publishing platform Ope
 
 Installation
 ------------
-* Download latest release from the [releases section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/releases).
+* Download the .tar file from the latest release in the [releases section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/releases).
 
 * Install via the OJS UI: Administration-> Settings-> Website-> Plugins-> Upload A New Plugin.
 
