@@ -57,7 +57,7 @@
 										  xlink:href="http://purl.org/eprint/accessRights/OpenAccess"
 										  displayLabel="Access Status">Open Access</mods:accessCondition>
 					<mods:accessCondition>gratis</mods:accessCondition>
-					<mods:genre>article</mods:genre>
+					<mods:genre authority="marcgt">article</mods:genre>
 					<mods:typeOfResource>text</mods:typeOfResource>
 					{assign var=authors value=$article->getAuthors()}
 					{foreach from=$authors item=author}
