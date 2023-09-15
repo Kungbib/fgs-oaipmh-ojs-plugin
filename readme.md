@@ -11,9 +11,7 @@ Installation
 ------------
 * Download the .tar file from the latest release in the [releases section](https://github.com/Kungbib/fgs-oaipmh-ojs-plugin/releases).
 
-* Install via the OJS UI: Administration-> Settings-> Website-> Plugins-> Upload A New Plugin.
-
-* Upgrade to a new version by selecting the plugin in the plugin list and click 'Upgrade'.
+* Install via the OJS UI: Administration-> Settings-> Website-> Plugins-> Upload A New Plugin. If the plugin is already installed: upgrade to a new version by selecting the plugin in the plugin list and click 'Upgrade'.
 
 How to use the plugins
 ----------------------
