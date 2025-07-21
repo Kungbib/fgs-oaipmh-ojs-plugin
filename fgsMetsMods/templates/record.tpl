@@ -10,9 +10,9 @@
 	  xmlns:mods="http://www.loc.gov/mods/v3"
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	  {if $article->getStoredPubId('doi')}
-	  OBJID="doi:{$article->getStoredPubId('doi')|escape}"
+	  OBJID="doi:{$article->getStoredPubId('doi')|escape|trim}"
 	  {else}
-	  OBJID="{$altObjectId|escape}"
+	  OBJID="{$altObjectId|escape|trim}"
 	  {/if}
 	  TYPE="SIP"
 	  LABEL="{$article->getTitle($article->getLocale())|escape}"
